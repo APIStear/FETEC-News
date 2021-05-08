@@ -31,8 +31,8 @@ app.get('/*', (req,res) => {
 
 
 app.listen(PORT, _ => {
-  adminConfig()
-  .then(_ => {
-    console.log('Server up and running on port ' + PORT)
-  });
+  // adminConfig()
+  // .then(_ => {
+  console.log('Server up and running on port ' + PORT)
+  // });
 });
