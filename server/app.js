@@ -9,6 +9,8 @@ const express = require('express'),
       path = require('path'),
       PORT = process.env.PORT || 4000;
 
+// DB Setup
+require('./config/dbConfig'),
 
 app.use(logger('dev'));
 app.use(cors());
