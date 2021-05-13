@@ -8,7 +8,7 @@ Install Node and React if not already installed.
 
 In root (`./FETEC-News`)
 ```bash
-npm config
+npm run config
 ``` 
 
 This creates a new `.env` file, which has to be modified. For security, variable `MONGODB_URI` is missing the user password.
