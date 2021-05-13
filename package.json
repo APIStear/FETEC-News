@@ -7,7 +7,9 @@
     "postinstall": "cd server && npm install",
     "start": "node server/app.js",
     "config": "cp .env.config .env && echo \"WARNING: .env file created, modify sensitive variables and add db password\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devServer": "nodemon server/app.js",
+    "devClient": "cd client && npm start"
   },
   "repository": {
     "type": "git",
