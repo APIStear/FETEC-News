@@ -11,12 +11,6 @@ const userSchema = new mongoose.Schema({
   studentId:{
     type: String,
     required: [true, "Matrícula es requerida"],
-  },
-  role: {
-    type: Number,
-    default: 0,
-    // 0 = normal user, 99 = admin
-    enum: [0,99],
   }
 });
 
