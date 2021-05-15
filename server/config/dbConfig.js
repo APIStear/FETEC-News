@@ -17,4 +17,5 @@ function setup(){
   mongoose.connection.on('disconnected', () => console.log(`Disconnected from database`));
 }
 
+
 setup();

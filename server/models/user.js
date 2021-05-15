@@ -20,5 +20,12 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+// Custom validation
+userSchema.path('studentID').validate(function (value) {
+  re = /^[AL]0[0-9]{7}$/;
+  return re.test(v);
+}, 
+"La matrícula debe cumplir con el formato completo. [A0.......]."
+);
 
 module.exports = mongoose.Model('User', userSchema);

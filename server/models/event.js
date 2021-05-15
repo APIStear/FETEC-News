@@ -117,4 +117,5 @@ eventSchema.statics.getOne = async function(eventId){
   return event
 }
 
+
 module.exports = mongoose.model('Event', eventSchema);

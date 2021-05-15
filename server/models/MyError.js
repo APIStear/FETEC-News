@@ -7,5 +7,4 @@ module.exports = class MyError extends Error {
       this.stack = callstack;
     }
   }
-  
 }

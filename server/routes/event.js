@@ -25,4 +25,5 @@ router.delete('/:eventId',
   aHandler(eventCtr.delete()),
 );
 
+
 module.exports = router;
