@@ -35,7 +35,6 @@ ctr.edit = () => async (req, res, next) => {
   const {studentId} = req.params;
   const {
     name,
-    studentId,
     mail,
     gender,
     careerProgram,
@@ -43,7 +42,7 @@ ctr.edit = () => async (req, res, next) => {
     isTec21,
     schoolProgram,
     numRSVPs
-  }
+  } = req.body;
 
   const user = new User.updateUser(
     studentId,

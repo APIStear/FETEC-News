@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
   studentId:{
     type: String,
     required: [true, "Matrícula es requerida"],
+    match: [
+      /^[AL]0[0-9]{7}$/,
+      "La matrícula debe cumplir con el formato completo. [A0.......].",
+    ],
   },
   mail: {
     type: String,
@@ -16,7 +20,7 @@ const userSchema = new mongoose.Schema({
   },
   imgKey: {
     type: [String]
-  }
+  },
   gender: {
     type: String
   },
@@ -46,14 +50,6 @@ const userSchema = new mongoose.Schema({
     select: false,
   }
 });
-
-// Custom validation
-userSchema.path('studentID').validate(function (value) {
-  re = /^[AL]0[0-9]{7}$/;
-  return re.test(v);
-}, 
-"La matrícula debe cumplir con el formato completo. [A0.......]."
-);
 
 userSchema.statics.updateUser = async function(studentId, name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {
   const user = await this.findOneAndUpdate(
