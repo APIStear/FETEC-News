@@ -70,6 +70,7 @@ ctr.delete = () => async (req, res, next) => {
 
 ctr.getAll = () => async(req, res, next) => {
 
+  // page & page size for pagination
   let {page, pageSize} = req.query;
 
   // Check for nonintegers
@@ -81,9 +82,10 @@ ctr.getAll = () => async(req, res, next) => {
   pageSize = pageSize > 0 ? pageSize : 10;
 
   // starts on 0
-  currentPage = page-1;
+  currentPage = page - 1;
 
-  const data = await User.getAll(page, pageSize);
+  const data = await User.getAll(currentPage, pageSize);
+
   return res.status(200).json(data);
 }
 

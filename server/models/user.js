@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Correo es requerido"],
   },
+  imgKey: {
+    type: [String]
+  }
   gender: {
     type: String
   },
@@ -41,7 +44,7 @@ const userSchema = new mongoose.Schema({
     default: true,
     // by default, it will not be shown in document, unless selected
     select: false,
-  },
+  }
 });
 
 // Custom validation
