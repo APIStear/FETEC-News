@@ -15,7 +15,7 @@ router.post('/',
   aHandler(userCtr.create()),
 );
 
-router.put('/',
+router.put('/:studentId',
   aHandler(userCtr.edit()),
 );
 

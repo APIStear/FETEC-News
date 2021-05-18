@@ -32,6 +32,8 @@ ctr.create = () => async (req, res, next) => {
 }
 
 ctr.edit = () => async (req, res, next) => {
+  console.log("--------------Arrived hereeeeeeeeeee--------------")
+
   const {studentId} = req.params;
   const {
     name,
@@ -44,8 +46,7 @@ ctr.edit = () => async (req, res, next) => {
     numRSVPs
   } = req.body;
 
-  const user = new User.updateUser(
-    studentId,
+  const user = new User.updateUser({
     name,
     mail,
     gender,
@@ -54,7 +55,7 @@ ctr.edit = () => async (req, res, next) => {
     isTec21,
     schoolProgram,
     numRSVPs
-  );
+  });
 
   return res.status(200).json({user})
 }

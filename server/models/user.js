@@ -51,9 +51,9 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.statics.updateUser = async function(studentId, name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {
+userSchema.statics.updateUser = async function(name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {
   const user = await this.findOneAndUpdate(
-    {_id: studentId, bActive: true},
+    {studentId: studentId, bActive: true},
     {
       name,
       mail,
@@ -114,4 +114,4 @@ userSchema.statics.getOne = async function(studentId) {
   return user;
 }
 
-module.exports = mongoose.Model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
