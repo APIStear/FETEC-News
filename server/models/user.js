@@ -52,10 +52,6 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.updateUser = async function(userId, studentId, name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {  
-
-  console.log("-----------------updateUser-----------------")
-  console.log(`userId: ${userId}`)
-
   const user = await this.findOneAndUpdate(
     {_id: userId, bActive: true},
     {
@@ -71,8 +67,6 @@ userSchema.statics.updateUser = async function(userId, studentId, name, mail, ge
     },
     {new: true}
   ).exec();
-
-
 
   if(!user) {
     return Promise.reject(new MyError(404, "No se encontró el usuario."));
