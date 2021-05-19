@@ -7,7 +7,7 @@ router.get('/',
   aHandler(userCtr.getAll()),
 );
 
-router.get('/:studentId',
+router.get('/:userId',
   aHandler(userCtr.getOne()),
 );
 
@@ -15,11 +15,11 @@ router.post('/',
   aHandler(userCtr.create()),
 );
 
-router.put('/:studentId',
+router.put('/:userId',
   aHandler(userCtr.edit()),
 );
 
-router.delete('/:studentId',
+router.delete('/:userId',
   aHandler(userCtr.delete()),
 );
 

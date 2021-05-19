@@ -62,9 +62,9 @@ ctr.edit = () => async (req, res, next) => {
 }
 
 ctr.delete = () => async (req, res, next) => {
-  const {studentId} = req.params;
+  const {userId} = req.params;
 
-  const user = await User.deleteUser(studentId);
+  const user = await User.deleteUser(userId);
 
   return res.status(200).json({user});
 }
