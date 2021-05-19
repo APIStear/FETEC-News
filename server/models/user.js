@@ -51,10 +51,11 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.statics.updateUser = async function(name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {
+userSchema.statics.updateUser = async function(userId, studentId, name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {
   const user = await this.findOneAndUpdate(
-    {studentId: studentId, bActive: true},
+    {_id: userId, bActive: true},
     {
+      studentId,
       name,
       mail,
       gender,
@@ -62,6 +63,7 @@ userSchema.statics.updateUser = async function(name, mail, gender, careerProgram
       semester,
       isTec21,
       schoolProgram,
+      numRSVPs
     },
     {new: true}
   ).exec();
@@ -73,9 +75,9 @@ userSchema.statics.updateUser = async function(name, mail, gender, careerProgram
   return user;
 }
 
-userSchema.statics.deleteUser = async function(studentId) {
+userSchema.statics.deleteUser = async function(userId) {
   const user = await this.findOneAndUpdate(
-    {_id: studentId, bActive: true},
+    {_id: userId, bActive: true},
     {bActive: false},
     {new: true}
   ).exec()
