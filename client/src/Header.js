@@ -29,13 +29,13 @@ const navLinks = [
 const Header = () => {
   const classes = useStyles();
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="static" color="secondary">
       <Toolbar>
         <Container className={classes.navbarDisplayFlex}>
           {/* Replace by CE Logo */}
           <Link to="/">
             <IconButton edge="start" color="inherit" aria-label="home">
-              <Home fontSize="large" style={{ color: "white" }} />
+              <Home fontSize="large" color="primary"/>
             </IconButton>
           </Link>
           <Hidden smDown>
@@ -56,7 +56,7 @@ const Header = () => {
                   to="/login"
                   component={Link}
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   disableElevation
                   className={classes.linkText}
               >

@@ -69,7 +69,7 @@ export default function SignIn(loginHandler) {
     console.log('error :>> ', error);
   }
   return (
-    <Container component="main" maxWidth="xl">
+    <Container component="main" maxWidth="lg">
       <CssBaseline />
       <div className={classes.paper}>
         <Grid container >
