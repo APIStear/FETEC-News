@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     color: `white`,
   },
   drawerPrimary: {  
-    background: theme.palette.primary.main,
+    background: theme.palette.secondary.main,
   }
 }))
 
@@ -52,7 +52,7 @@ const SideDrawer = ({ navLinks }) => {
               to="/login"
               component={Link}
               variant="contained"
-              color="secondary"
+              color="primary"
               disableElevation
               className={classes.linkText}
           >
