@@ -49,3 +49,12 @@ Install `nodemon` to have changes applied on each save
 ``` bash
 npm start  # uses nodemon
 ```
+
+## Contribute
+If a developer wishes to contribute to this initiative, he/she may do so by creating a Pull Request in which the following format should be included in the description.
+```
+[FETEC News- <# of the task>]()
+
+## Description
+Brief description of what the task does
+```
