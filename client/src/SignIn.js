@@ -8,10 +8,7 @@ import Container from '@material-ui/core/Container';
 import GoogleLogin from 'react-google-login';
 import axios from "axios";
 import { Paper } from '@material-ui/core';
-<<<<<<< HEAD
 import { useHistory } from "react-router-dom";
-=======
->>>>>>> 92acc4bf2bc89ebff0dd984977037395d35933df
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,21 +27,10 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(4)
     }
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
   centerText: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
 }));
 
