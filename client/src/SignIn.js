@@ -9,6 +9,8 @@ import GoogleLogin from 'react-google-login';
 import axios from "axios";
 import { Paper } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,8 +43,7 @@ export default function SignIn({loginHandler}) {
   const _login = async googleData => {
     let {respError, firstLogin} = await _loginHandler(googleData.tokenId);
     if (respError) {
-      // TODO: use snackbar to show error
-      alert(respError)
+      toast.error(respError)
     } else if(firstLogin){
       history.push("/dashboard", {success: "Bienvenid@! Registra tus datos de perfil."})
     } else {
@@ -72,8 +73,15 @@ export default function SignIn({loginHandler}) {
   const _loginFailure = async error => {
     console.log('error :>> ', error);
   }
+
   return (
     <Container component="main" maxWidth="lg">
+      <ToastContainer 
+          position="top-right"
+          draggable={false}
+          autoClose={4000}
+
+        />
       <CssBaseline />
       <div className={classes.paper}>
         <Grid container >

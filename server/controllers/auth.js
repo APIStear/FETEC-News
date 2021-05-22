@@ -5,7 +5,6 @@ const ctr = {},
 
 ctr.googleAuth = () => async (req, res, next) => {
   const {token} = req.body;
-  console.log('token :>> ', token);
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: process.env.CLIENT_ID
