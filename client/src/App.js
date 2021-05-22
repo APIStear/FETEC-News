@@ -13,7 +13,7 @@ function App() {
   return (
     <Theme>
       <Router>
-        <Header />
+        <Header status={loggedIn} loginHandler={setLoggedIn}/>
         <Switch>
           <Route
             path='/login'

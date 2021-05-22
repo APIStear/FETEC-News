@@ -6,6 +6,9 @@ import { Home } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core"
 import SideDrawer from "./SideDrawer"
 import { Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
+import { deleteToken, deleteUserId } from "./TokenUtilities";
+
 const useStyles = makeStyles({
   navbarDisplayFlex: {
     display: `flex`,
@@ -21,13 +24,29 @@ const useStyles = makeStyles({
   }
 });
 
-const navLinks = [
-  { title: `Eventos`, path: `/events` },
-  { title: `Dashboard`, path: `/dashboard` },
-]
 
-const Header = () => {
+const Header = ({ status, loginHandler }) => {
   const classes = useStyles();
+  let history = useHistory();
+  let navLinks = {};
+  if(status) {
+    navLinks = [
+      { title: `Eventos`, path: `/events` },
+      {title: 'Dashboard', path: '/dashboard'},
+    ]
+  } else {
+    navLinks = [
+      { title: `Eventos`, path: `/events` },
+    ]
+  }
+
+  const _logout = _ => {
+      deleteToken();
+      deleteUserId();
+      loginHandler(false);
+      history.push("/");
+  }
+
   return (
     <AppBar position="static" color="secondary">
       <Toolbar>
@@ -51,18 +70,30 @@ const Header = () => {
                   </ListItem>
                 </Link>
               ))}
-            <ListItem>
-              <Button 
-                  to="/login"
-                  component={Link}
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  className={classes.linkText}
-              >
-                Login
-              </Button>
-            </ListItem>
+              <ListItem>
+                {status? 
+                  <Button 
+                      variant="contained"
+                      color="primary"
+                      disableElevation
+                      className={classes.linkText}
+                      onClick={_logout}
+                  >
+                    Logout
+                  </Button>
+                :
+                  <Button 
+                      to="/login"
+                      component={Link}
+                      variant="contained"
+                      color="primary"
+                      disableElevation
+                      className={classes.linkText}
+                  >
+                    Login
+                  </Button>
+                }
+              </ListItem>
             </List>
             
           </Hidden>
