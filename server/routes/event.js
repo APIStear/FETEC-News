@@ -25,5 +25,8 @@ router.delete('/:eventId',
   aHandler(eventCtr.delete()),
 );
 
+router.put('/:reserveEvent',
+  aHandler(eventCtr.rsvp()),
+);
 
 module.exports = router;
