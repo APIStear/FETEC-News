@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import GoogleLogin from 'react-google-login';
 import axios from "axios";
 import { Paper } from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,24 +45,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn(loginHandler) {
+export default function SignIn({loginHandler}) {
   const classes = useStyles();
+  let history = useHistory();
+
   const _login = async googleData => {
-    console.log('googleData :>> ', googleData);
+    let {respError, firstLogin} = await _loginHandler(googleData.tokenId);
+    if (respError) {
+      // TODO: use snackbar to show error
+      alert(respError)
+    } else if(firstLogin){
+      history.push("/dashboard", {success: "Bienvenid@! Registra tus datos de perfil."})
+    } else {
+      history.push("/", {success: "Inicio de sesión exitoso."})
+    }
+  }
+
+  const _loginHandler = token => {
     const url = process.env.REACT_APP_API_DOMAIN + "/api/auth/google";
-    console.log('url :>> ', url);
     return axios
-      .post(url, {
-        token: googleData.tokenId
-      })
+      .post(url, { token })
       .then(response => {
-        // localStorage.setItem("token", response.data.token);
-        console.log('response :>> ', response);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.user._id);
+        loginHandler(true);
+        return {respError: null, firstLogin: response.data.firstLogin}
       })
       .catch(error => {
+        console.log('error :>> ', error);
         if(error.response) {
-          return error.response.data.message
-        } else return error.message;
+          console.log('error.response :>> ', error.response);
+          return {respError: error.response.data.message};
+        } else return {respError: error.message};
       })
       
   }
