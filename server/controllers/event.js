@@ -90,7 +90,7 @@ ctr.rsvp = () => async (req, res, next) => {
   const {
     eventId,
     userId,
-  } = req.body;
+  } = req.params;
 
   const event = await Event.reserveEvent(
     eventId,

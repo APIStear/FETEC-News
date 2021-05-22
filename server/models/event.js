@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'),
       MyError = require('./MyError');
-const User = require('/user');
+const User = require('./user');
 
 const eventSchema = new mongoose.Schema({
   title: {
@@ -136,7 +136,7 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
   } 
 
   user.numRSVPs = user.numRSVPs + 1;
-  event.RSVPlist.push(user.id);
+  event.RSVPlist.push(user._id);
 
   return {event, user};
 }

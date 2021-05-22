@@ -25,7 +25,7 @@ router.delete('/:eventId',
   aHandler(eventCtr.delete()),
 );
 
-router.put('/:reserveEvent',
+router.post('/:eventId/users/:userId',
   aHandler(eventCtr.rsvp()),
 );
 
