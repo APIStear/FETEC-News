@@ -6,12 +6,9 @@ import { Home } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core"
 import SideDrawer from "./SideDrawer"
 import { Link } from 'react-router-dom'
-<<<<<<< HEAD
 import { useHistory } from "react-router-dom";
 import { deleteToken, deleteUserId } from "./TokenUtilities";
 
-=======
->>>>>>> 92acc4bf2bc89ebff0dd984977037395d35933df
 const useStyles = makeStyles({
   navbarDisplayFlex: {
     display: `flex`,
@@ -27,7 +24,6 @@ const useStyles = makeStyles({
   }
 });
 
-<<<<<<< HEAD
 
 const Header = ({ status, loginHandler }) => {
   const classes = useStyles();
@@ -51,15 +47,6 @@ const Header = ({ status, loginHandler }) => {
       history.push("/");
   }
 
-=======
-const navLinks = [
-  { title: `Eventos`, path: `/events` },
-  { title: `Dashboard`, path: `/dashboard` },
-]
-
-const Header = () => {
-  const classes = useStyles();
->>>>>>> 92acc4bf2bc89ebff0dd984977037395d35933df
   return (
     <AppBar position="static" color="secondary">
       <Toolbar>
@@ -83,7 +70,6 @@ const Header = () => {
                   </ListItem>
                 </Link>
               ))}
-<<<<<<< HEAD
               <ListItem>
                 {status? 
                   <Button 
@@ -108,22 +94,7 @@ const Header = () => {
                   </Button>
                 }
               </ListItem>
-=======
-            <ListItem>
-              <Button 
-                  to="/login"
-                  component={Link}
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  className={classes.linkText}
-              >
-                Login
-              </Button>
-            </ListItem>
->>>>>>> 92acc4bf2bc89ebff0dd984977037395d35933df
             </List>
-            
           </Hidden>
           <Hidden mdUp>
             <SideDrawer navLinks={navLinks}/>
