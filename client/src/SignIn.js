@@ -8,7 +8,10 @@ import Container from '@material-ui/core/Container';
 import GoogleLogin from 'react-google-login';
 import axios from "axios";
 import { Paper } from '@material-ui/core';
+<<<<<<< HEAD
 import { useHistory } from "react-router-dom";
+=======
+>>>>>>> 92acc4bf2bc89ebff0dd984977037395d35933df
 
 const useStyles = makeStyles((theme) => ({
   paper: {

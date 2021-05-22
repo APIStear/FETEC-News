@@ -13,7 +13,6 @@ ctr.googleAuth = () => async (req, res, next) => {
   const payload = ticket.getPayload();    
   const { name, email, picture } = payload; 
   let user = await User.getByEmail(email);
-  console.log('user from email :>> ', user);
   let firstLogin = false;
   if(!user) {
     firstLogin = true;
@@ -23,12 +22,10 @@ ctr.googleAuth = () => async (req, res, next) => {
         // Takes studentId from email
         studentId: email.substr(0, email.lastIndexOf("@")).toUpperCase()
     })
-    console.log('user :>> ', user);
     await user.save();
   }
 
   const jwtToken = user.generateToken();
-  console.log('firstLogin :>> ', firstLogin);
   return res.status(201).json({user, firstLogin, token: jwtToken});
 }
 
