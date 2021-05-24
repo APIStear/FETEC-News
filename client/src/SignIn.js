@@ -71,7 +71,7 @@ export default function SignIn({loginHandler}) {
       
   }
   const _loginFailure = async error => {
-    console.log('error :>> ', error);
+    toast.error(error);
   }
 
   return (
