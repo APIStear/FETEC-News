@@ -48,7 +48,8 @@ export default function SignIn({loginHandler}) {
     } else if(firstLogin){
       history.push("/dashboard", {success: "Bienvenid@! Registra tus datos de perfil."})
     } else {
-      history.goBack({success: "Inicio de sesión exitoso."})
+      let { from } = location.state || { from: { pathname: "/" } };
+      history.replace(from, {success: "Inicio de sesión exitoso"})
     }
   }
 
@@ -76,6 +77,7 @@ export default function SignIn({loginHandler}) {
   }
 
   useEffect(() => {
+    document.title= 'Login | CE News'
     if(location && location.state && location.state.error !== "") {
       toast.error(location.state.error)
     }

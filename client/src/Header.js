@@ -5,7 +5,7 @@ import { IconButton } from "@material-ui/core"
 import { Home } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core"
 import SideDrawer from "./SideDrawer"
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 import { deleteToken, deleteUserId } from "./TokenUtilities";
 
@@ -28,6 +28,8 @@ const useStyles = makeStyles({
 const Header = ({ status, loginHandler }) => {
   const classes = useStyles();
   let history = useHistory();
+  let location = useLocation();
+
   let navLinks = {};
   if(status) {
     navLinks = [
@@ -83,7 +85,10 @@ const Header = ({ status, loginHandler }) => {
                   </Button>
                 :
                   <Button 
-                      to="/login"
+                      to={{
+                        pathname: "/login",
+                        state: { from: location }
+                      }}
                       component={Link}
                       variant="contained"
                       color="primary"

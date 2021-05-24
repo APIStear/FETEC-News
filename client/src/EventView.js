@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
 import {Box, Button, Container, Grid, Typography} from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
@@ -54,12 +53,19 @@ const EventView = ({ history, location }) => {
   const [RSVPed, setRSVPed] = useState(false);
   const classes = useStyles();
 
-  location = useLocation();
   const queryString = require("query-string");
   let parsed = queryString.parse(location.search);
   let { eventId } = parsed;
 
   useEffect(() => {
+    if(location && location.state && location.state.error !== "") {
+      if(location.state.error !== "") {
+        toast.error(location.state.error)
+      }
+      if(location.state.success !== "") {
+        toast.success(location.state.success)
+      }
+    }
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
       .then(response => {
       
@@ -68,6 +74,7 @@ const EventView = ({ history, location }) => {
 
         console.log('response.data.event :>> ', response.data.event);
         setEvent(response.data.event)
+        document.title = `${response.data.event.title} | CE News`
         const userId = getUserId()
         if(userId) {
           console.log(getToken())
@@ -90,11 +97,11 @@ const EventView = ({ history, location }) => {
         }      
       })
 
-  }, [eventId, history])
+  }, [eventId, history, location])
 
   const _RSVP = _ => {
     if(!getUserId()) {
-      return history.push("/login", {error: 'Debes iniciar sesión para hacer eso.'});
+      return history.push("/login", {from: location, error: 'Debes iniciar sesión para hacer eso.'});
     }
     return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
     {
@@ -108,8 +115,9 @@ const EventView = ({ history, location }) => {
       if (error.response) {
         if (error.response.status === 401 || error.response.status === 405) {
           deleteToken();
-          deleteUserId();             
-          history.push("/login", {error: 'Debes iniciar sesión para hacer eso.'});
+          deleteUserId();
+          alert(JSON.stringify(location))
+          history.push("/login", {from: location, error: 'Debes iniciar sesión para hacer eso.'});
         } else {
           toast.error(error.response.data.message)
         }
