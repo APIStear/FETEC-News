@@ -109,7 +109,7 @@ userSchema.statics.getAll = async function(page, pageSize) {
 
 userSchema.statics.getOne = async function(studentId) {
   const user = await this.findOne({
-    __id: studentId,
+    _id: studentId,
     bActive: true,
   }).exec();
 
@@ -129,10 +129,9 @@ userSchema.statics.getByEmail = async function(email) {
   return user
 }
 
-userSchema.methods.generateToken = async function() {
+userSchema.methods.generateToken = function() {
   const user = this;
   const token = jwt.sign({_id: user._id.toString() }, process.env.JWT_SECRET);
-
   return token;
 }
 
