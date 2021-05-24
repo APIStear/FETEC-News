@@ -25,5 +25,8 @@ router.delete('/:eventId',
   aHandler(eventCtr.delete()),
 );
 
+router.post('/:eventId/users/:userId',
+  aHandler(eventCtr.rsvp()),
+);
 
 module.exports = router;
