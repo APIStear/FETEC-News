@@ -88,7 +88,7 @@ ctr.getOne = () => async (req, res, next) => {
 
 ctr.checkIfRSVPed = () => async (req, res, next) => {
   const {eventId, userId} = req.params;
-  console.log('userId :>> ', userId);
+
   const RSVPed = await Event.checkIfRSVPed(eventId, userId);
 
   return res.status(200).json({RSVPed});
@@ -100,12 +100,12 @@ ctr.rsvp = () => async (req, res, next) => {
     userId,
   } = req.params;
 
-  const event = await Event.reserveEvent(
+  const RSVPed = await Event.reserveEvent(
     eventId,
     userId,
   );
 
-  return res.status(200).json({event});
+  return res.status(200).json({RSVPed});
 }
 
 module.exports = ctr;

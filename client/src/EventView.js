@@ -5,7 +5,7 @@ import {Box, Button, Container, Grid, Typography} from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import Image from 'material-ui-image'
-import { getUserId, getToken } from './TokenUtilities';
+import { getUserId, getToken, deleteUserId, deleteToken } from './TokenUtilities';
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -84,15 +84,40 @@ const EventView = ({ history, location }) => {
       })
       .catch(error => {
         if (error.response) {
-          toast.error(error.response.data.message)
-          // history.push("/", {error: error.response.data.message})
+          history.push("/", {error: error.response.data.message})
         } else {
-          toast.error("Hubo un error")
-          // history.push('/', {error:"Hubo un error"});
+          history.push('/', {error:"Hubo un error"});
         }      
       })
 
   }, [eventId, history])
+
+  const _RSVP = _ => {
+    if(!getUserId()) {
+      return history.push("/login", {error: 'Debes iniciar sesión para hacer eso.'});
+    }
+    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
+    {
+      headers: { Authorization: `Bearer ${getToken()}` } 
+    })
+    .then(response => {
+      setRSVPed(response.data.RSVPed);
+      toast.success('Registro exitoso! Te llegará más información a través de tu correo institucional.')
+    })
+    .catch(error =>{
+      if (error.response) {
+        if (error.response.status === 401 || error.response.status === 405) {
+          deleteToken();
+          deleteUserId();             
+          history.push("/login", {error: 'Debes iniciar sesión para hacer eso.'});
+        } else {
+          toast.error(error.response.data.message)
+        }
+      } else {
+        toast.error("Hubo un error")
+      }   
+    })
+  }
 
   const _back = _ => {
     history.push("/events")
@@ -163,6 +188,7 @@ const EventView = ({ history, location }) => {
                       color="primary"
                       className={classes.linkText}
                       disabled={RSVPed}
+                      onClick={_RSVP}
                     >
                     {RSVPed? 'RSVPed' : 'RSVP'}
                   </Button>

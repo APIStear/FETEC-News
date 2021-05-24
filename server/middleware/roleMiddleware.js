@@ -16,7 +16,7 @@ mw.isLoggedIn = async (req, res, next) => {
     req.user = user;
     next();
   } else {
-    return Promise.reject(new MyError(401, 'Debes iniciar sesión.'));
+    return Promise.reject(new MyError(401, 'Debes iniciar sesión para hacer eso.'));
   }
 };
 
@@ -24,13 +24,12 @@ mw.isLoggedIn = async (req, res, next) => {
 mw.isOwnerOrAdmin = async (req, res, next) =>{
   const token = req.headers['authorization'];
   if (!token) {
-    return Promise.reject(new MyError(401, 'Debes iniciar sesión.'));
+    return Promise.reject(new MyError(401, 'Debes iniciar sesión para ahacer eso.'));
   }
   const data = await jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
   const user = await User.findById(data._id).select('+role +tokens').exec();
 
   if (user && user._id == req.params.userId) {
-    console.log('passed');
     return next();
   } else if (user) {
     return Promise.reject( new MyError(403,
