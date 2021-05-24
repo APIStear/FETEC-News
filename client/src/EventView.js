@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
-import {Box, Button, Container, Grid, Tooltip, Typography} from '@material-ui/core';
+import {Box, Button, Container, Grid, Typography} from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import Image from 'material-ui-image'

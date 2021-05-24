@@ -6,8 +6,8 @@ import React, { useState } from "react";
 import { getToken } from './TokenUtilities';
 import PageFooter from './PageFooter'
 import Theme from './Theme';
-import PrivateRoute from './PrivateRoute';
 import EventView from './EventView';
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(getToken());
 
