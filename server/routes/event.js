@@ -29,5 +29,10 @@ router.delete('/:eventId',
 router.get('/:eventId/users/:userId',
   aHandler(isOwnerOrAdmin),
   aHandler(eventCtr.checkIfRSVPed())
-)
+);
+
+router.post('/:eventId/users/:userId',
+  aHandler(eventCtr.rsvp()),
+);
+
 module.exports = router;

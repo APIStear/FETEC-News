@@ -94,4 +94,18 @@ ctr.checkIfRSVPed = () => async (req, res, next) => {
   return res.status(200).json({RSVPed});
 }
 
+ctr.rsvp = () => async (req, res, next) => {
+  const {
+    eventId,
+    userId,
+  } = req.params;
+
+  const event = await Event.reserveEvent(
+    eventId,
+    userId,
+  );
+
+  return res.status(200).json({event});
+}
+
 module.exports = ctr;

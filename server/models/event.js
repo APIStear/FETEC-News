@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
       User = require('./user'),
       MyError = require('./MyError');
+const User = require('./user');
 
 const eventSchema = new mongoose.Schema({
   title: {
@@ -136,6 +137,29 @@ eventSchema.statics.checkIfRSVPed = async function(eventId, userId) {
   const RSVPed = event.RSVPlist.includes(userId);
 
   return RSVPed;
+}
+
+eventSchema.statics.reserveEvent = async function(eventId, userId) {
+  const user = await User.getOne(userId);
+
+  if(!user) {
+    return Promise.reject(new MyError(404, "No se encontró el usuario."));
+  }
+
+  const event = await this.getOne(eventId);
+
+  if(!event) {
+    return Promise.reject(new MyError(404, "No se encontró el evento."));
+  }
+
+  if(event.RSVPlist.includes(userId)) {
+    return Promise.reject(new MyError(404, "El usuario ya reservó el evento."));
+  } 
+
+  user.numRSVPs = user.numRSVPs + 1;
+  event.RSVPlist.push(user._id);
+
+  return {event, user};
 }
 
 module.exports = mongoose.model('Event', eventSchema);
