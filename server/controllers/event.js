@@ -86,5 +86,12 @@ ctr.getOne = () => async (req, res, next) => {
   return res.status(200).json({event});
 }
 
+ctr.checkIfRSVPed = () => async (req, res, next) => {
+  const {eventId, userId} = req.params;
+  console.log('userId :>> ', userId);
+  const RSVPed = await Event.checkIfRSVPed(eventId, userId);
+
+  return res.status(200).json({RSVPed});
+}
 
 module.exports = ctr;

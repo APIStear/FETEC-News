@@ -1,6 +1,7 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       aHandler = require('express-async-handler'),
+      {isOwnerOrAdmin} = require('../middleware/roleMiddleware'),
       eventCtr = require('../controllers/event');
 
 router.get('/', 
@@ -25,5 +26,8 @@ router.delete('/:eventId',
   aHandler(eventCtr.delete()),
 );
 
-
+router.get('/:eventId/users/:userId',
+  aHandler(isOwnerOrAdmin),
+  aHandler(eventCtr.checkIfRSVPed())
+)
 module.exports = router;
