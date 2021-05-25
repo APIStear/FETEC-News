@@ -22,10 +22,11 @@ let errorHandler = () => async (err,req,res,next) => {
       let msg = '';
       for(type in err.errors){
         if(msg.length > 0){
-          msg+= " ";
+          msg+= ", ";
         }
         msg+=err.errors[type].message;
       }
+      console.log('msg :>> ', msg);
       next(new MyError(409,msg, err.stack))
       break;
       

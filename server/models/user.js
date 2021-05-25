@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'),
+      jwt = require('jsonwebtoken'),
       MyError = require('./MyError');
 
 const userSchema = new mongoose.Schema({
@@ -14,7 +15,7 @@ const userSchema = new mongoose.Schema({
       "La matrícula debe cumplir con el formato completo. [A0.......].",
     ],
   },
-  mail: {
+  email: {
     type: String,
     required: [true, "Correo es requerido"],
   },
@@ -26,11 +27,9 @@ const userSchema = new mongoose.Schema({
   },
   careerProgram: {
     type: String,
-    required: [true, "Carrera es requerida"],
   },
   semester: {
     type: Number,
-    requred: [true, "Semestre es requerido"],
   },
   isTec21: {
     type: Boolean,
@@ -50,6 +49,11 @@ const userSchema = new mongoose.Schema({
     select: false,
   }
 });
+
+userSchema.path('email').validate(async function(value){
+  const emailCount =await mongoose.models.User.countDocuments({email: value, _id: { $ne: this._id  } });
+  return !emailCount;
+}, 'El correo {VALUE} ya fue utilizado.');
 
 userSchema.statics.updateUser = async function(userId, studentId, name, mail, gender, careerProgram, semester, isTec21, schoolProgram, numRSVPs) {  
   const user = await this.findOneAndUpdate(
@@ -114,6 +118,22 @@ userSchema.statics.getOne = async function(studentId) {
   }
 
   return user;
+}
+
+userSchema.statics.getByEmail = async function(email) {
+  const user = await this.findOne({
+    email: email,
+    bActive: true,
+  }).exec();
+
+  return user
+}
+
+userSchema.methods.generateToken = async function() {
+  const user = this;
+  const token = jwt.sign({_id: user._id.toString() }, process.env.JWT_SECRET);
+
+  return token;
 }
 
 module.exports = mongoose.model('User', userSchema);

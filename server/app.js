@@ -17,17 +17,19 @@ require('./config/dbConfig');
 // Routes
 const eventRoutes = require('./routes/event');
 const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 app.use(logger('dev'));
 app.use(cors());
 
-// app.use((req, res, next) => express.json()(req, res, next));
-app.use( bodyParser.urlencoded({extended: true}))
+app.use((req, res, next) => express.json()(req, res, next));
+// app.use( bodyParser.urlencoded({extended: true}))
 
 // Serves build
 app.use(express.static(path.resolve('./client/build')));
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/users', userRoutes);
 
