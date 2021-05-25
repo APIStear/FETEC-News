@@ -13,7 +13,7 @@ export default function AllEvents() {
       .then(response => {
         let events = response.data.events
         let allEvents = events.map((event) =>
-          <div>
+          <div key={event.title}>
             <Typography component='h5' variant='h5'>
               Titulo: {event.title}
                 <Typography component='body2' variant='body2'>
