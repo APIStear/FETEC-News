@@ -1,18 +1,8 @@
 import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
 
-// const initialState = [{
-//   title: "",
-//   description: "",
-//   startDate: new Date(),
-//   imgKeys: [],
-//   endDate: new Date(),
-//   location: "",
-//   isRSVP: false,
-//   RSVPlist: [],
-//   studentGroup: ""
-// }];
 
 export default function AllEvents() {
   let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
@@ -22,12 +12,22 @@ export default function AllEvents() {
     axios.get(`${url}/api/events/`)
       .then(response => {
         let events = response.data.events
-
-        let allEventsListed = events.map((event) =>
-          <h2>{event.title}</h2>
+        let allEvents = events.map((event) =>
+          <div>
+            <Typography component='h5' variant='h5'>
+              Titulo: {event.title}
+                <Typography component='body2' variant='body2'>
+                  <div> Descripción: {event.description} </div>
+                  <div> startDate: {event.startDate} </div>
+                  <div> endDate: {event.endDate} </div>
+                  <div> location: {event.location} </div>
+                  <div> studentGroup: {event.studentGroup} </div>
+                </Typography>
+            </Typography>
+            <div>⠀</div>
+          </div>
         )
-
-        setEvents(allEventsListed)
+        setEvents(allEvents)
       }).catch(error => {
         console.log(error);
       });
