@@ -19,26 +19,28 @@ export default function EventNew() {
   function _events() {
     return axios.get(`${url}/api/events/`)
       .then((response) => {
-        console.log(response.data.events)
-        return response.data.events
+        let events = response.data.events
+        return events.map((event) =>
+          <h2>{event.title}</h2>
+        )
+
+        // return eventList;
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  // _events();
-
   let events = _events()
 
 
-  const nums = [1,2,3] 
-  const eventList = nums.map((event) =>
-    <h2>{event}</h2>
-  )
+  // let nums = [1,2,3] 
+  // let eventList = nums.map((event) =>
+  //   <h2>{event}</h2>
+  // )
 
   return (
-    eventList
+    events
 
     // <h1>Hello</h1>
 
