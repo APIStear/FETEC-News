@@ -11,6 +11,7 @@ import { Paper } from '@material-ui/core';
 import { useHistory, useLocation } from "react-router-dom";
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { isWhiteSpaceOrEmpty } from './UserDashboard';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,14 +43,18 @@ export default function SignIn({loginHandler}) {
   let location = useLocation();
 
   const _login = async googleData => {
-    let {respError, firstLogin} = await _loginHandler(googleData.tokenId);
+    let {respError, firstLogin, user} = await _loginHandler(googleData.tokenId);
     if (respError) {
       toast.error(respError)
     } else if(firstLogin){
       history.push("/dashboard", {success: "Bienvenid@! Registra tus datos de perfil."})
     } else {
-      let { from } = location.state || { from: { pathname: "/" } };
-      history.replace(from, {success: "Inicio de sesión exitoso"})
+      if(isWhiteSpaceOrEmpty(user.gender) || isWhiteSpaceOrEmpty(user.careerProgram) || isWhiteSpaceOrEmpty(user.schoolProgram)) {
+        history.push("/dashboard", {success: "Inicio de sesión exitoso. Registra tus datos de perfil."})
+      } else {
+        let { from } = location.state || { from: { pathname: "/" } };
+        history.replace(from, {success: "Inicio de sesión exitoso"})
+      }
     }
   }
 
@@ -61,7 +66,7 @@ export default function SignIn({loginHandler}) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.user._id);
         loginHandler(true);
-        return {respError: null, firstLogin: response.data.firstLogin}
+        return {respError: null, firstLogin: response.data.firstLogin, user: response.data.user}
       })
       .catch(error => {
         console.log('error :>> ', error);
