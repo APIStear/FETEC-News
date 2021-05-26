@@ -1,0 +1,41 @@
+.columnHeaders{
+    padding: 20px 20px 0px 60px;
+}
+
+.EventCard{
+    display: flex;
+    width: 100%;
+    padding: 20px;
+}
+.EventDate{
+    width: 30%;
+}
+.EventTitleOrg{
+    width: 35%;
+}
+.EventLocation{
+    width: 20%;
+
+}
+.EventDetails{
+    width: 15%;
+}
+.EventTitle{
+    font-size: 25px;
+    font-weight: 300;
+}
+.EventDetails{
+    font-size: medium;
+    font-weight: 300;
+}
+.EventsContainer {
+    margin: 0px 25px 25px 25px;
+    padding: 0px 15px 15px 15px;
+}
+.columnHeaders{
+    display: flex;
+}
+h2 {
+    font-weight: 400;
+    letter-spacing: 2px;
+}

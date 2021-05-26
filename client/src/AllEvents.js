@@ -1,12 +1,20 @@
-import React from 'react';
+import React from "react";
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
+import './AllEvents.css';
+import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { format } from "date-fns";
+
+
+
 
 // TODO: Esto solo puede ser accesado como admin
 export default function AllEvents() {
   let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
   const [eventList, setEvents] = useState([]);
+
 
   useEffect(() => {
     axios.get(`${url}/api/events/`)
@@ -14,17 +22,31 @@ export default function AllEvents() {
         let events = response.data.events
         let allEvents = events.map((event) =>
           <div key={event.title}>
-            <Typography component="h5" variant="h5">
-              Titulo: {event.title}
+            <div className="EventCard">
+              <div className="EventDate">
+                <div> inicio: {event.startDate} </div>
+                {/* {format(new Date(event.starDate), "MMMM do, yyyy H:mma")} */}
+                {/* <div> fin: {event.endDate} </div> */}
+              </div>
+              <div className="EventTitleOrg">
+                <div className="EventTitle"> {event.title} </div>
+                <div className="EventDetails"> {event.studentGroup} </div>
+              </div>
+              <div className="EventLocation">
+                <div className="EventDetails"> {event.location} </div>
+              </div>
+              <div className="EventDetails">
+              <Button variant="contained" color="primary" >
+                Ver más
+              </Button>
+              </div>
+            </div>
+            {/* <Typography component="h5" variant="h5">
                 <Typography component="body2" variant="body2">
                   <div> Descripción: {event.description} </div>
-                  <div> startDate: {event.startDate} </div>
-                  <div> endDate: {event.endDate} </div>
-                  <div> location: {event.location} </div>
-                  <div> studentGroup: {event.studentGroup} </div>
                 </Typography>
-            </Typography>
-            <div>⠀</div>
+            </Typography> */}
+            <hr></hr>
           </div>
         )
         setEvents(allEvents)
@@ -34,6 +56,15 @@ export default function AllEvents() {
   });
 
   return (
-    eventList
+    <div>
+      <div className="columnHeaders" >
+        <h2 className="EventDate">Fecha</h2>
+        <h2 className="EventTitleOrg">Evento</h2>
+        <h2 className="EventLocation">Lugar</h2>
+      </div>
+      <div className="EventsContainer">
+          {eventList}
+      </div>
+    </div>
   );
 }
