@@ -2,8 +2,6 @@ import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
-import SearchBar from './SearchBar'
-
 
 // TODO: Esto solo puede ser accesado como admin
 export default function AllEvents() {
@@ -36,7 +34,6 @@ export default function AllEvents() {
   });
 
   return (
-    <SearchBar />,
     eventList
   );
 }

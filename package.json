@@ -20,8 +20,5 @@
   "bugs": {
     "url": "https://github.com/APIStear/FETEC-News/issues"
   },
-  "homepage": "https://github.com/APIStear/FETEC-News#readme",
-  "dependencies": {
-    "@material-ui/lab": "^4.0.0-alpha.58"
-  }
+  "homepage": "https://github.com/APIStear/FETEC-News#readme"
 }
