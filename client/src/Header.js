@@ -1,14 +1,12 @@
 import * as React from "react"
 import { AppBar, Button, Container, Toolbar, Hidden } from "@material-ui/core"
 import { List, ListItem, ListItemText } from "@material-ui/core"
-import { IconButton } from "@material-ui/core"
-import { Home } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core"
 import SideDrawer from "./SideDrawer"
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import { deleteToken, deleteUserId } from "./TokenUtilities";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   navbarDisplayFlex: {
     display: `flex`,
     justifyContent: `space-between`
@@ -20,8 +18,13 @@ const useStyles = makeStyles({
   linkText: {
     textDecoration: `none`,
       color: `white`
+  },
+  logo: {
+    maxWidth: 100,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(0)
   }
-});
+}));
 
 
 const Header = ({ status, loginHandler }) => {
@@ -54,9 +57,7 @@ const Header = ({ status, loginHandler }) => {
         <Container className={classes.navbarDisplayFlex}>
           {/* Replace by CE Logo */}
           <Link to="/">
-            <IconButton edge="start" color="inherit" aria-label="home">
-              <Home fontSize="large" color="primary"/>
-            </IconButton>
+            <img src='./ejecutivo azul-01.png' alt="Logo" className={classes.logo}/>
           </Link>
           <Hidden smDown>
             <List 

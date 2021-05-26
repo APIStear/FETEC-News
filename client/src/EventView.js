@@ -103,7 +103,7 @@ const EventView = ({ history, location }) => {
     }
     return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
     {
-      headers: { Authorization: `Bearer ${getToken()}` } 
+      headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then(response => {
       setRSVPed(response.data.RSVPed);
@@ -121,7 +121,7 @@ const EventView = ({ history, location }) => {
         }
       } else {
         toast.error("Hubo un error")
-      }   
+      }
     })
   }
 
