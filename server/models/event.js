@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
       User = require('./user'),
       MyError = require('./MyError');
+const User = require('./user');
 
 const eventSchema = new mongoose.Schema({
   title: {
@@ -139,6 +140,7 @@ eventSchema.statics.checkIfRSVPed = async function(eventId, userId) {
 
 eventSchema.statics.reserveEvent = async function(eventId, userId) {
   const user = await User.getOne(userId);
+
   if(!user) {
     return Promise.reject(new MyError(404, "No se encontró el usuario."));
   }
@@ -147,7 +149,8 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
     _id: eventId,
     bActive: true,
   }).select('+RSVPlist').exec();
-
+  const event = await this.getOne(eventId);
+ 
   if(!event) {
     return Promise.reject(new MyError(404, "No se encontró el evento."));
   }
