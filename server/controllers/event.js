@@ -101,7 +101,6 @@ ctr.rsvp = () => async (req, res, next) => {
   } = req.params;
 
   const RSVPed = await Event.reserveEvent(
-  const event = await Event.reserveEvent(
     eventId,
     userId,
   );
