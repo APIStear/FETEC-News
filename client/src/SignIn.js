@@ -83,7 +83,7 @@ export default function SignIn({loginHandler}) {
     }
     if(localStorage.getItem("token")){
       // Check first if usable, if not stay
-      history.push("/", {success: "You are already logged in."})
+      history.push("/", {success: "Ya iniciaste sesión."})
     }
   }, [history, location]);
 

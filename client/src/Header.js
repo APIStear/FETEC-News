@@ -5,8 +5,7 @@ import { IconButton } from "@material-ui/core"
 import { Home } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core"
 import SideDrawer from "./SideDrawer"
-import { Link, useLocation } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
+import { Link, useLocation, useHistory } from 'react-router-dom'
 import { deleteToken, deleteUserId } from "./TokenUtilities";
 
 const useStyles = makeStyles({
@@ -46,7 +45,7 @@ const Header = ({ status, loginHandler }) => {
       deleteToken();
       deleteUserId();
       loginHandler(false);
-      history.push("/");
+      history.push("/", {success: "Se ha cerrado la sesión exitosamente."});
   }
 
   return (
@@ -102,7 +101,7 @@ const Header = ({ status, loginHandler }) => {
             </List>
           </Hidden>
           <Hidden mdUp>
-            <SideDrawer navLinks={navLinks}/>
+            <SideDrawer navLinks={navLinks} status={status} loginHandler={loginHandler}/>
           </Hidden>
         </Container>
       </Toolbar>

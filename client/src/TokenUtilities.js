@@ -21,3 +21,7 @@ export function deleteToken() {
 export function deleteUserId() {
   localStorage.removeItem("userId");
 }
+
+export function isAdminUser() {
+  return localStorage.userId === "admin";
+}
