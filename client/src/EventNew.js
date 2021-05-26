@@ -3,6 +3,8 @@ import axios from "axios";
 import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
+import './EventNew.css';
+
 
 const useStyles = makeStyles((theme) => ({
   spacingBottom: {
@@ -43,31 +45,39 @@ export default function EventNew() {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-      // TODO: Redireccionar a todos los eventos 
+      // TODO: Redireccionar a todos los eventos
       toast.success("Evento registrado correctamente")
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
     });
   }
-  
+
   return(
     <Container component="main" maxWidth="lg">
       <div className={classes.spacing}>
-        <h1>Nuevo Evento</h1>
-        <ToastContainer 
+        <h1 className="EventNew-header">Nuevo Evento</h1>
+        <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}
         />
         <Grid container>
-          <TextField id="title" fullWidth label="Titulo"/>
-          <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
+          <div className="EventNew-InputGrid">
+            <div className="EventNew-row">
+              <TextField id="title" fullWidth label="Titulo"/>
+              <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
+            </div>
+            <div className="EventNew-row">
+              <TextField id="startDate" fullWidth label="Fecha de Inicio"/>
+              <TextField id="endDate" fullWidth label="Fecha fin"/>
+            </div>
+            <div className="EventNew-row">
+              <TextField id="imgKeys" fullWidth label="URL de fotos"/>
+              <TextField id="location" fullWidth label="Lugar"/>
+            </div>
+          </div>
           <TextField id="description" fullWidth label="Descripción"/>
-          <TextField id="startDate" fullWidth label="Fecha de Inicio"/>
-          <TextField id="endDate" fullWidth label="Fecha fin"/>
-          <TextField id="imgKeys" fullWidth label="URL de fotos"/>
-          <TextField id="location" fullWidth label="Lugar"/>
           <Checkbox
             name="RSVP"
             color="primary"
