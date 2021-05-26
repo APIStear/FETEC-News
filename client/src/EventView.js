@@ -46,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
     padding: [[theme.spacing(1), theme.spacing(3)]],
     //'font-weight': 'bold'
     display: 'block'
+  },
+  warningButton: {
+   backgroundColor: "#FF0000",
+   marginTop: theme.spacing(4),
+   padding: [[theme.spacing(1), theme.spacing(3)]],
+   display: 'block'
   }
 }));
 const EventView = ({ history, location }) => {
@@ -68,7 +74,7 @@ const EventView = ({ history, location }) => {
     }
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
       .then(response => {
-      
+
         response.data.event.startDate = new Date(response.data.event.startDate)
         response.data.event.endDate = new Date(response.data.event.endDate)
 
@@ -81,20 +87,20 @@ const EventView = ({ history, location }) => {
           return axios
             .get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${userId}`,
             {
-              headers: { Authorization: `Bearer ${getToken()}` } 
+              headers: { Authorization: `Bearer ${getToken()}` }
             })
         } else return {data: {RSVPed: false}}
       })
       .then(response => {
         setRSVPed(response.data.RSVPed)
-        
+
       })
       .catch(error => {
         if (error.response) {
           history.push("/", {error: error.response.data.message})
         } else {
           history.push('/', {error:"Hubo un error"});
-        }      
+        }
       })
 
   }, [eventId, history, location])
@@ -103,9 +109,9 @@ const EventView = ({ history, location }) => {
     if(!getUserId()) {
       return history.push("/login", {from: location, error: 'Debes iniciar sesión para hacer eso.'});
     }
-    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
+    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {},
     {
-      headers: { Authorization: `Bearer ${getToken()}` } 
+      headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then(response => {
       setRSVPed(response.data.RSVPed);
@@ -123,7 +129,7 @@ const EventView = ({ history, location }) => {
         }
       } else {
         toast.error("Hubo un error")
-      }   
+      }
     })
   }
 
@@ -131,9 +137,29 @@ const EventView = ({ history, location }) => {
     history.push("/events")
   }
 
+  const _cancel_event = _ => {
+    axios.put(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`, {
+      title: "true"
+    }).then(response => {
+      toast.success("Evento cancelado correctamente")
+    }).catch(error => {
+      let errors = error.response.data.message;
+      toast.error(errors);
+    });
+  }
+
+  const _delete_event = _ => {
+    axios.delete(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
+     .then(response => {
+       toast.success("Evento eliminado correctamente")
+     }).catch(error => {
+       toast.error(error);
+     });
+  }
+
   return (
     <Container component="main" maxWidth="lg">
-      <ToastContainer 
+      <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}
@@ -212,6 +238,27 @@ const EventView = ({ history, location }) => {
                 >
                   Volver a Eventos
                 </Button>
+
+                <div>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.warningButton}
+                    onClick={_cancel_event}
+                  >
+                    Cancelar evento
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.warningButton}
+                    onClick={_delete_event}
+                  >
+                    Eliminar evento
+                  </Button>
+                </div>
             </Grid>
           </Box>
         </Grid>
