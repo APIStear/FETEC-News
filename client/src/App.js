@@ -8,6 +8,9 @@ import PageFooter from './PageFooter'
 import Theme from './Theme';
 import EventView from './EventView';
 import Admin from './Admin';
+import PrivateRoute from './PrivateRoute';
+import Dashboard from './Dashboard';
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(getToken());
@@ -23,6 +26,7 @@ function App() {
           />
           <Route path='/event' component={EventView}/>
           <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
+          <PrivateRoute path='/dashboard' component={Dashboard}/>
         </Switch>
         <PageFooter />
       </Router>
