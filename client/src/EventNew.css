@@ -1,0 +1,28 @@
+main {
+    background: #eee;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: #ddd 5px 5px 5px;
+    text-align: center;
+}
+
+.MuiFormControl-fullWidth {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.makeStyles-spacingTop-5 {
+    color: white !important;
+}
+
+.EventNew-header{
+    font-weight: 300;
+}
+.EventNew-InputGrid{
+    width: 100%;
+}
+.EventNew-row{
+    display: flex;
+}
