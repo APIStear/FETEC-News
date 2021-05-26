@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'),
+      User = require('./user'),
       MyError = require('./MyError');
 const User = require('./user');
 
@@ -6,6 +7,10 @@ const eventSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, "Título es requerido"],
+  },
+  // Asociation or student group organizing the event
+  studentGroup: {
+    type: String,
   },
   description: {
     type: String,
@@ -118,6 +123,21 @@ eventSchema.statics.getOne = async function(eventId){
   return event
 }
 
+eventSchema.statics.checkIfRSVPed = async function(eventId, userId) {
+  const event = await this.findOne({
+    _id: eventId,
+    bActive:true,
+  }).select('+RSVPlist').exec()
+  const user = await User.getOne(userId);
+
+  if(!event) {
+    return Promise.reject(new MyError(404, "No se encontró el evento"));
+  }
+  const RSVPed = event.RSVPlist.includes(userId);
+
+  return RSVPed;
+}
+
 eventSchema.statics.reserveEvent = async function(eventId, userId) {
   const user = await User.getOne(userId);
 
@@ -125,8 +145,12 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
     return Promise.reject(new MyError(404, "No se encontró el usuario."));
   }
 
+  const event = await this.findOne({
+    _id: eventId,
+    bActive: true,
+  }).select('+RSVPlist').exec();
   const event = await this.getOne(eventId);
-
+ 
   if(!event) {
     return Promise.reject(new MyError(404, "No se encontró el evento."));
   }
@@ -138,7 +162,8 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
   user.numRSVPs = user.numRSVPs + 1;
   event.RSVPlist.push(user._id);
 
-  return {event, user};
+  await Promise.all([user.save(), event.save()])
+  return true;
 }
 
 module.exports = mongoose.model('Event', eventSchema);

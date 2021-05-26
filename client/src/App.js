@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { getToken } from './TokenUtilities';
 import PageFooter from './PageFooter'
 import Theme from './Theme';
+import EventView from './EventView';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(getToken());
@@ -19,6 +20,7 @@ function App() {
             path='/login'
             render = {(props) => (<SignIn {... props}  loginHandler={setLoggedIn} />)}
           />
+          <Route path='/event' component={EventView}/>
         </Switch>
         <PageFooter />
       </Router>

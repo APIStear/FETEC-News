@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import GoogleLogin from 'react-google-login';
 import axios from "axios";
 import { Paper } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn({loginHandler}) {
   const classes = useStyles();
   let history = useHistory();
+  let location = useLocation();
 
   const _login = async googleData => {
     let {respError, firstLogin} = await _loginHandler(googleData.tokenId);
@@ -47,7 +48,8 @@ export default function SignIn({loginHandler}) {
     } else if(firstLogin){
       history.push("/dashboard", {success: "Bienvenid@! Registra tus datos de perfil."})
     } else {
-      history.push("/", {success: "Inicio de sesión exitoso."})
+      let { from } = location.state || { from: { pathname: "/" } };
+      history.replace(from, {success: "Inicio de sesión exitoso"})
     }
   }
 
@@ -71,8 +73,19 @@ export default function SignIn({loginHandler}) {
       
   }
   const _loginFailure = async error => {
-    console.log('error :>> ', error);
+    toast.error(error);
   }
+
+  useEffect(() => {
+    document.title= 'Login | CE News'
+    if(location && location.state && location.state.error !== "") {
+      toast.error(location.state.error)
+    }
+    if(localStorage.getItem("token")){
+      // Check first if usable, if not stay
+      history.push("/", {success: "You are already logged in."})
+    }
+  }, [history, location]);
 
   return (
     <Container component="main" maxWidth="lg">
