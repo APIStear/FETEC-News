@@ -7,14 +7,10 @@ import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { format } from "date-fns";
 
-
-
-
 // TODO: Esto solo puede ser accesado como admin
 export default function AllEvents() {
   let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
   const [eventList, setEvents] = useState([]);
-
 
   useEffect(() => {
     axios.get(`${url}/api/events/`)
@@ -25,8 +21,6 @@ export default function AllEvents() {
             <div className="EventCard">
               <div className="EventDate">
                 <div> inicio: {event.startDate} </div>
-                {/* {format(new Date(event.starDate), "MMMM do, yyyy H:mma")} */}
-                {/* <div> fin: {event.endDate} </div> */}
               </div>
               <div className="EventTitleOrg">
                 <div className="EventTitle"> {event.title} </div>
@@ -41,11 +35,6 @@ export default function AllEvents() {
               </Button>
               </div>
             </div>
-            {/* <Typography component="h5" variant="h5">
-                <Typography component="body2" variant="body2">
-                  <div> Descripción: {event.description} </div>
-                </Typography>
-            </Typography> */}
             <hr></hr>
           </div>
         )
