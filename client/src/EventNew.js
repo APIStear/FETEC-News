@@ -26,7 +26,7 @@ export default function EventNew() {
     return imgKeys.split(" ").filter(e => e !== "");
   }
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
 
   const _createEvent = _ => {
     let title = document.getElementById("title").value;
@@ -79,31 +79,21 @@ export default function EventNew() {
             </div>
             <div className="EventNew-row">
               <div className="EventDate">
-              <p>Fecha de inicio: </p>
-              <DatePicker required id="startDate"
-                selected={startDate}
+                <p>Fecha de inicio: </p>
+                <DatePicker id="startDate"
+                selected={startDate} 
                 onChange={date => setStartDate(date)}
-                showTimeSelect
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-              />
-
-                {/* <DatePicker id="startDate" selected={startDate} onChange={date => setStartDate(date)} showTimeSelect  /> */}
+                showTimeSelect />
               </div>
               <div className="EventDate">
-              <p>Fecha de fin: </p>
+                <p>Fecha de fin: </p>
                 {/* <DatePicker   selected={endDate} onChange={date => setEndDate(date)} showTimeSelect /> */}
                 <DatePicker id="endDate"
-                selected={endDate}
+                selected={endDate} 
                 onChange={date => setEndDate(date)}
                 showTimeSelect
-                showTimeSelect
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
                 minDate={startDate}
-              />
+                />
               </div>
               {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
             </div>
