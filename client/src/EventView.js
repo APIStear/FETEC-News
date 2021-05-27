@@ -48,15 +48,27 @@ const useStyles = makeStyles((theme) => ({
     display: 'block'
   },
   warningButton: {
-   backgroundColor: "#FF0000",
-   marginTop: theme.spacing(4),
-   padding: [[theme.spacing(1), theme.spacing(3)]],
-   display: 'block'
+    backgroundColor: "#FF0000",
+    marginTop: theme.spacing(4),
+    padding: [[theme.spacing(1), theme.spacing(3)]],
+    display: 'block'
+  },
+
+  coolButton: {
+    backgroundColor: "#00FF00",
+    marginTop: theme.spacing(4),
+    padding: [[theme.spacing(1), theme.spacing(3)]],
+    display: 'block'
+  },
+
+  canceled: {
+    color: "#FF0000"
   }
 }));
 const EventView = ({ history, location }) => {
   const [event, setEvent] = useState(initialState);
   const [RSVPed, setRSVPed] = useState(false);
+  const [canceled, setCanceled] = useState(false);
   const classes = useStyles();
 
   const queryString = require("query-string");
@@ -80,6 +92,7 @@ const EventView = ({ history, location }) => {
 
         console.log('response.data.event :>> ', response.data.event);
         setEvent(response.data.event)
+        setCanceled(response.data.event.canceled);
         document.title = `${response.data.event.title} | CE News`
         const userId = getUserId()
         if(userId) {
@@ -139,9 +152,14 @@ const EventView = ({ history, location }) => {
 
   const _cancel_event = _ => {
     axios.put(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`, {
-      title: "true"
+      canceled: !canceled
     }).then(response => {
-      toast.success("Evento cancelado correctamente")
+      if (canceled) {
+       toast.success("Evento reagendado nuevamente");
+      } else {
+       toast.success("Evento cancelado correctamente");
+      }
+      setCanceled(!canceled);
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
@@ -152,6 +170,7 @@ const EventView = ({ history, location }) => {
     axios.delete(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
      .then(response => {
        toast.success("Evento eliminado correctamente")
+       history.push("/events")
      }).catch(error => {
        toast.error(error);
      });
@@ -184,6 +203,14 @@ const EventView = ({ history, location }) => {
           </Box>
           <Box clone  order={{xs: 1, md: 2}}>
             <Grid item md={7} xs={12} className={classes.title}>
+                {canceled?
+                  <Typography component='h1' variant='h2' className={classes.canceled}>
+                    Evento cancelado
+                  </Typography>
+                  :
+                  ""
+                }
+
                 <Typography component='h1' variant='h2'>
                   {event.title}
                 </Typography>
@@ -239,16 +266,34 @@ const EventView = ({ history, location }) => {
                   Volver a Eventos
                 </Button>
 
-                <div>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    className={classes.warningButton}
-                    onClick={_cancel_event}
-                  >
-                    Cancelar evento
-                  </Button>
-                </div>
+                {
+                 // TODO: Esto nada más debe de salirle a un admin
+                }
+                {canceled?
+                    <div>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.coolButton}
+                        onClick={_cancel_event}
+                      >
+                        Reagendar evento
+                      </Button>
+                    </div>
+
+                    :
+                    <div>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.warningButton}
+                        onClick={_cancel_event}
+                      >
+                        Cancelar evento
+                      </Button>
+                    </div>
+                }
+
                 <div>
                   <Button
                     variant="contained"
