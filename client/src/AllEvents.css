@@ -42,9 +42,25 @@
 
 .columnHeaders{
     display: flex;
+    color: #3f3f3f;
 }
 
-h2 {
+h2, h1 {
     font-weight: 400;
     letter-spacing: 2px;
+}
+
+.EventDateDay{
+    font-size: 35px;
+    font-weight: 700;
+    color: #3f3f3f;
+}
+
+.EventsMain {
+    padding: 0 10vh;
+}
+
+h1 {
+    text-align: center;
+    color: #3f3f3f;
 }
