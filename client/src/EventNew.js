@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
 import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,12 +25,18 @@ export default function EventNew() {
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const _createEvent = _ => {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
     let description = document.getElementById("description").value;
-    let startDate = document.getElementById("startDate").value;
+    // const [startDate, setStartDate] = useState(new Date());
+    // return (
+    //   <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+    // );
+    // let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
@@ -65,19 +74,45 @@ export default function EventNew() {
         <Grid container>
           <div className="EventNew-InputGrid">
             <div className="EventNew-row">
-              <TextField id="title" fullWidth label="Titulo"/>
+              <TextField id="title" fullWidth label="Titulo" required/>
               <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
             </div>
             <div className="EventNew-row">
-              <TextField id="startDate" fullWidth label="Fecha de Inicio"/>
-              <TextField id="endDate" fullWidth label="Fecha fin"/>
+              <div className="EventDate">
+              <p>Fecha de inicio: </p>
+              <DatePicker required id="startDate"
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                showTimeSelect
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+              />
+
+                {/* <DatePicker id="startDate" selected={startDate} onChange={date => setStartDate(date)} showTimeSelect  /> */}
+              </div>
+              <div className="EventDate">
+              <p>Fecha de fin: </p>
+                {/* <DatePicker   selected={endDate} onChange={date => setEndDate(date)} showTimeSelect /> */}
+                <DatePicker id="endDate"
+                selected={endDate}
+                onChange={date => setEndDate(date)}
+                showTimeSelect
+                showTimeSelect
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+              />
+              </div>
+              {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
             </div>
             <div className="EventNew-row">
               <TextField id="imgKeys" fullWidth label="URL de fotos"/>
               <TextField id="location" fullWidth label="Lugar"/>
             </div>
           </div>
-          <TextField id="description" fullWidth label="Descripción"/>
+          <TextField id="description" required fullWidth label="Descripción"/>
           <Checkbox
             name="RSVP"
             color="primary"
