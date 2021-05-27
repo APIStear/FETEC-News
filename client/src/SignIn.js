@@ -42,6 +42,7 @@ export default function SignIn({loginHandler}) {
   let location = useLocation();
 
   const _login = async googleData => {
+    console.log("Redirected");
     let {respError, firstLogin} = await _loginHandler(googleData.tokenId);
     if (respError) {
       toast.error(respError)
@@ -72,8 +73,9 @@ export default function SignIn({loginHandler}) {
       })
       
   }
-  const _loginFailure = async error => {
-    toast.error(error);
+  const _loginFailure = error => {
+    console.log("ERROR: ", error);
+    toast.error(error.details);
   }
 
   useEffect(() => {
@@ -85,6 +87,7 @@ export default function SignIn({loginHandler}) {
       // Check first if usable, if not stay
       history.push("/", {success: "You are already logged in."})
     }
+    console.log('process.env.REACT_APP_GOOGLE_CLIENT_ID :>> ', process.env.REACT_APP_GOOGLE_CLIENT_ID);
   }, [history, location]);
 
   return (
