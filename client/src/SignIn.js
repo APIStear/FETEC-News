@@ -115,7 +115,7 @@ export default function SignIn({loginHandler}) {
               </Typography>
               <Box mt={5} width="60%">
                 <Typography variant="subtitle1" align="center">
-                  Solo para estudiantes colaboradores del Tec de Monterrey
+                  Solo para estudiantes y colaboradores del Tec de Monterrey
                 </Typography>
                 <Box mt={2} className={classes.centerText}>
 

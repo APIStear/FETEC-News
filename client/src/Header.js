@@ -50,7 +50,7 @@ const Header = ({ status, loginHandler }) => {
   }
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static" color="secondary" elevation={0}>
       <Toolbar>
         <Container className={classes.navbarDisplayFlex}>
           {/* Replace by CE Logo */}
