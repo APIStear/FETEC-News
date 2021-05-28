@@ -10,6 +10,12 @@ import EventView from './EventView';
 import EventNew from './EventNew';
 import AllEvents from './AllEvents';
 import Admin from './Admin';
+import Banner from "./banner";
+import Gallery from './gallery'
+import SpecialEvents from "./specialEvents";
+
+
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(getToken());
@@ -28,10 +34,37 @@ function App() {
           <Route path='/events' component={AllEvents}/>
           <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
         </Switch>
-        <PageFooter />
       </Router>
+      <Banner
+        data={{ title: "Comité Electoral", paragraph: "Eventos Estudiantiles" }}
+      />
+      <SpecialEvents data={dataSE} />
+      <Gallery/>
+      <PageFooter />
     </Theme>
   );
 }
+var dataSE = [
+  {
+    icon: "fa fa-comments-o",
+    title: "Lorem ipsum",
+    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+  },
+  {
+    icon: "fa fa-bullhorn",
+    title: "Lorem ipsum",
+    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+  },
+  {
+    icon: "fa fa-group",
+    title: "Lorem ipsum",
+    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+  },
+  {
+    icon: "fa fa-magic",
+    title: "Lorem ipsum",
+    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
+  },
+];
 
 export default App;
