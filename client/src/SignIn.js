@@ -70,10 +70,10 @@ export default function SignIn({loginHandler}) {
           return {respError: error.response.data.message};
         } else return {respError: error.message};
       })
-      
+
   }
-  const _loginFailure = error => {
-    console.log("ERROR: ", error);
+  const _loginFailure = async error => {
+    toast.error(error);
     toast.error(error.details);
   }
 
@@ -90,7 +90,7 @@ export default function SignIn({loginHandler}) {
 
   return (
     <Container component="main" maxWidth="lg">
-      <ToastContainer 
+      <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}
@@ -130,7 +130,7 @@ export default function SignIn({loginHandler}) {
               </Box>
             </Paper>
           </Grid>
-          
+
         </Grid>
       </div>
     </Container>
