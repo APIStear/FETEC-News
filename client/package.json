@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "material-ui-image": "^3.3.2",
     "react": "^17.0.2",
+    "react-datepicker": "^3.8.0",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-material-ui-carousel": "^2.2.6",

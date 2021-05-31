@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
 import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
+import './EventNew.css';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
+
 
 const useStyles = makeStyles((theme) => ({
   spacingBottom: {
@@ -20,12 +25,18 @@ export default function EventNew() {
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
 
   const _createEvent = _ => {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
     let description = document.getElementById("description").value;
-    let startDate = document.getElementById("startDate").value;
+    // const [startDate, setStartDate] = useState(new Date());
+    // return (
+    //   <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+    // );
+    // let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
@@ -43,31 +54,55 @@ export default function EventNew() {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-      // TODO: Redireccionar a todos los eventos 
+      // TODO: Redireccionar a todos los eventos
       toast.success("Evento registrado correctamente")
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
     });
   }
-  
+
   return(
     <Container component="main" maxWidth="lg">
       <div className={classes.spacing}>
-        <h1>Nuevo Evento</h1>
-        <ToastContainer 
+        <h1 className="EventNew-header">Nuevo Evento</h1>
+        <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}
         />
         <Grid container>
-          <TextField id="title" fullWidth label="Titulo"/>
-          <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
-          <TextField id="description" fullWidth label="Descripción"/>
-          <TextField id="startDate" fullWidth label="Fecha de Inicio"/>
-          <TextField id="endDate" fullWidth label="Fecha fin"/>
-          <TextField id="imgKeys" fullWidth label="URL de fotos"/>
-          <TextField id="location" fullWidth label="Lugar"/>
+          <div className="EventNew-InputGrid">
+            <div className="EventNew-row">
+              <TextField id="title" fullWidth label="Titulo" required/>
+              <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
+            </div>
+            <div className="EventNew-row">
+              <div className="EventDate">
+                <p>Fecha de inicio: </p>
+                <DatePicker id="startDate"
+                selected={startDate} 
+                onChange={date => setStartDate(date)}
+                showTimeSelect />
+              </div>
+              <div className="EventDate">
+                <p>Fecha de fin: </p>
+                {/* <DatePicker   selected={endDate} onChange={date => setEndDate(date)} showTimeSelect /> */}
+                <DatePicker id="endDate"
+                selected={endDate} 
+                onChange={date => setEndDate(date)}
+                showTimeSelect
+                minDate={startDate}
+                />
+              </div>
+              {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
+            </div>
+            <div className="EventNew-row">
+              <TextField id="imgKeys" fullWidth label="URL de fotos"/>
+              <TextField id="location" fullWidth label="Lugar"/>
+            </div>
+          </div>
+          <TextField id="description" required fullWidth label="Descripción"/>
           <Checkbox
             name="RSVP"
             color="primary"
