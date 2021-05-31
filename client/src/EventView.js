@@ -68,7 +68,7 @@ const EventView = ({ history, location }) => {
     }
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
       .then(response => {
-      
+
         response.data.event.startDate = new Date(response.data.event.startDate)
         response.data.event.endDate = new Date(response.data.event.endDate)
 
@@ -79,20 +79,20 @@ const EventView = ({ history, location }) => {
           return axios
             .get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${userId}`,
             {
-              headers: { Authorization: `Bearer ${getToken()}` } 
+              headers: { Authorization: `Bearer ${getToken()}` }
             })
         } else return {data: {RSVPed: false}}
       })
       .then(response => {
         setRSVPed(response.data.RSVPed)
-        
+
       })
       .catch(error => {
         if (error.response) {
           history.push("/", {error: error.response.data.message})
         } else {
           history.push('/', {error:"Hubo un error"});
-        }      
+        }
       })
 
   }, [eventId, history, location])
@@ -101,9 +101,9 @@ const EventView = ({ history, location }) => {
     if(!getUserId()) {
       return history.push("/login", {from: location, error: 'Debes iniciar sesión para hacer eso.'});
     }
-    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
+    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {},
     {
-      headers: { Authorization: `Bearer ${getToken()}` } 
+      headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then(response => {
       setRSVPed(response.data.RSVPed);
@@ -121,7 +121,7 @@ const EventView = ({ history, location }) => {
         }
       } else {
         toast.error("Hubo un error")
-      }   
+      }
     })
   }
 
@@ -131,7 +131,7 @@ const EventView = ({ history, location }) => {
 
   return (
     <Container component="main" maxWidth="lg">
-      <ToastContainer 
+      <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}

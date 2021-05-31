@@ -48,6 +48,15 @@ export default function AllEvents() {
               >
                 Ver más
               </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                component={Link}
+                to={`/edit-event?eventId=${event._id}`}
+                disableElevation
+              >
+                Editar
+              </Button>
               </div>
             </div>
             <hr></hr>
@@ -61,7 +70,7 @@ export default function AllEvents() {
 
   return (
     <div className="EventsMain" >
-      <h1>Próximos Eventos</h1>
+      <h1>Todos los Eventos</h1>
       <div className="columnHeaders" >
         <h2 className="EventDate">Fecha</h2>
         <h2 className="EventTitleOrg">Evento</h2>
