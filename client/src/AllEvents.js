@@ -6,7 +6,8 @@ import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 // TODO: Esto solo puede ser accesado como admin
-export default function AllEvents() {
+const AllEvents = ({ history, location }) => {
+
   let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
   const [eventList, setEvents] = useState([]);
 
@@ -64,9 +65,10 @@ export default function AllEvents() {
       )})
         setEvents(allEvents)
       }).catch(error => {
+        history.push('/', {error:"Hubo un error"});
         console.log(error);
       });
-  });
+  }, [eventList, history, location]);
 
   return (
     <div className="EventsMain" >
@@ -82,3 +84,5 @@ export default function AllEvents() {
     </div>
   );
 }
+
+export default AllEvents;
