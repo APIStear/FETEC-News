@@ -56,7 +56,7 @@ const EditEvent = ({ history, location }) => {
      }).catch(error => {
        console.log(error);
      });
-  });
+  }, [eventId, history, location]);
 
   const _fix_url_images = (images) => {
     if (images) {
