@@ -6,6 +6,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Link, useHistory, useLocation } from "react-router-dom";
 import EventList from "./EventList";
 import { useState, useEffect } from "react";
+import Searchbar from './Searchbar';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,6 +46,23 @@ const AdminDashboard = () => {
       });
   }, [history, location]);
 
+  const _search = value => {
+    if(value !== '') {
+      value = `?title=${value}`
+    }
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}`)
+      .then(response => {
+        setEvents(response.data.events);
+      })
+      .catch(error => {
+        if (error.response) {
+          toast.error(error.response.data.message)
+        } else {
+          toast.error("Hubo un error");
+        }  
+      })
+  }
+
   return (
     <Container component="main" maxWidth="lg">
       <ToastContainer
@@ -71,6 +89,7 @@ const AdminDashboard = () => {
           Crear Evento
         </Button>
       </div>
+      <Searchbar onChange={_search}/>
       <div className="EventsMain">
         <EventList events={events}/>
       </div>

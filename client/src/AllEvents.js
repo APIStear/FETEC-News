@@ -2,7 +2,10 @@ import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import './AllEvents.css';
+import Searchbar from './Searchbar';
 import EventList from './EventList';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // TODO: Esto solo puede ser accesado como admin
 const AllEvents = ({ history, location }) => {
@@ -16,14 +19,40 @@ const AllEvents = ({ history, location }) => {
         const events = response.data.events 
         setEvents(events);
       }).catch(error => {
-        history.push('/', {error:"Hubo un error"});
-        console.log(error);
+        if (error.response) {
+          toast.error(error.response.data.message)
+        } else {
+          toast.error("Hubo un error");
+        }  
       });
-  }, [eventList, history, location, url]);
+  }, [history, location, url]);
+
+  const _search = value => {
+    if(value !== '') {
+      value = `?title=${value}`
+    }
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}`)
+      .then(response => {
+        setEvents(response.data.events);
+      })
+      .catch(error => {
+        if (error.response) {
+          toast.error(error.response.data.message)
+        } else {
+          toast.error("Hubo un error");
+        }  
+      })
+  }
 
   return (
     <div className="EventsMain" >
+      <ToastContainer
+          position="top-right"
+          draggable={false}
+          autoClose={4000}
+      />
       <h1>Próximos Eventos</h1>
+      <Searchbar onChange={_search}/>
       <EventList events={eventList}/>
     </div>
   );
