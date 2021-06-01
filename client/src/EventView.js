@@ -183,7 +183,7 @@ const EventView = ({ history, location }) => {
 
       />
       <div className={classes.paper}>
-        <Grid container >
+        <Grid container style={{"text-align": "left"}}>
           <Box clone  order={{xs: 2, md: 1}}>
             <Grid item md={5} xs={12}>
               <Carousel>
@@ -212,10 +212,11 @@ const EventView = ({ history, location }) => {
                 <Typography component='h1' variant='h2'>
                   {event.title}
                 </Typography>
+                <hr style={{ "width": "70%" }}></hr>
                 <Typography component='h2' variant='h4'>
                   {event.studentGroup}
-                </Typography>
-                <Typography component='h2' variant='h5'>
+                </Typography>               
+                <Typography component='h5' variant='h5' style={{color:"#3f3f3f"}}>
                   Inicio: {new Intl.DateTimeFormat("es-MX", {
                     year: "numeric",
                     month: "numeric",
@@ -225,7 +226,8 @@ const EventView = ({ history, location }) => {
                     hour12: true
                   }).format(event.startDate)}
                 </Typography>
-                <Typography component='h3' variant='h5'>
+
+                <Typography component='h3' variant='h5' style={{color:"#3f3f3f"}}>
                   Fin: {new Intl.DateTimeFormat("es-MX", {
                     year: "numeric",
                     month: "numeric",
@@ -236,7 +238,7 @@ const EventView = ({ history, location }) => {
                   }).format(event.endDate)}
                 </Typography>
                 <Typography component='h3' variant='h5'>
-                  Lugar: {event.location}
+                  {event.location}
                 </Typography>
                 <Typography component='h2' variant='h6'>
                   {event.description}
@@ -281,11 +283,12 @@ const EventView = ({ history, location }) => {
 
                     :
                     <div>
-                      <Button
+                      <Button disableElevation
                         variant="contained"
                         color="secondary"
                         className={classes.warningButton}
                         onClick={_cancel_event}
+                        style={{color: '#FFFFFF'}}
                       >
                         Cancelar evento
                       </Button>
@@ -293,7 +296,8 @@ const EventView = ({ history, location }) => {
                 }
 
                 <div>
-                  <Button
+                  <Button disableElevation
+                    style={{color: '#FFFFFF'}}
                     variant="contained"
                     color="secondary"
                     className={classes.warningButton}
