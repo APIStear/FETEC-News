@@ -1,8 +1,8 @@
 let mongoose = require('mongoose');
 
 function setup(){
-  let uri = 'MONGODB_URI';
-  if(process.env.NODE_ENV==='test') uri+= '_TEST'
+  let uri = 'mongodb+srv://root:toor@cluster0.zeibl.mongodb.net/main?retryWrites=true&w=majority';
+  if(process.env.NODE_ENV==='test') 
   mongoose.connect(process.env[uri], { 
     useNewUrlParser: true,
     useFindAndModify: false,

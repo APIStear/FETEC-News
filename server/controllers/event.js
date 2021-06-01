@@ -61,7 +61,7 @@ ctr.delete = () => async (req, res, next) => {
 ctr.getAll = () => async (req, res, next) => {
   // page & page size for pagination
   // all else is for filters
-  let {startDate, endDate, title, page, pageSize} = req.query;
+  let {startDate, endDate, title, page, pageSize, sort} = req.query;
   
   // Check for nonintegers
   page = parseInt(page) || 1;
@@ -74,7 +74,7 @@ ctr.getAll = () => async (req, res, next) => {
   // starts on 0
   currentPage = page-1;
 
-  const data = await Event.getAll(currentPage, pageSize, startDate, endDate, title);
+  const data = await Event.getAll(currentPage, pageSize, startDate, endDate, title, sort);
 
   return res.status(200).json(data);
 }
