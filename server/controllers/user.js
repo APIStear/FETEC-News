@@ -91,8 +91,8 @@ ctr.getAll = () => async(req, res, next) => {
 }
 
 ctr.getOne = () => async (req, res, next) => {
-  const {studentId} = req.params;
-  const user = await User.getOne(studentId);
+  const {userId} = req.params;
+  const user = await User.getOne(userId);
 
   return res.status(200).json({user});
 }
