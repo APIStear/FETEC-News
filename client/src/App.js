@@ -7,9 +7,10 @@ import { getToken } from './TokenUtilities';
 import PageFooter from './PageFooter'
 import Theme from './Theme';
 import EventView from './EventView';
-import Banner from "./banner";
-import Gallery from './gallery'
-import SpecialEvents from "./specialEvents";
+import EventNew from './EventNew';
+import AllEvents from './AllEvents';
+import Admin from './Admin';
+import Home from './Home';
 
 
 
@@ -27,38 +28,23 @@ function App() {
             render = {(props) => (<SignIn {... props}  loginHandler={setLoggedIn} />)}
           />
           <Route path='/event' component={EventView}/>
+          <Route path='/new-event' component={EventNew}/>
+          <Route path='/events' component={AllEvents}/>
+          <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
+          <Route path='/*' component={Home} />
         </Switch>
       </Router>
+<<<<<<< HEAD
       <Banner
         data={{ title: "Comité Electoral", paragraph: "Eventos Estudiantiles" }}
       />
       {/* <SpecialEvents data={dataSE} /> */}
       <Gallery/>
+=======
+>>>>>>> e2aec2db7d6c7ab9f14fce9d94ac2ef171318336
       <PageFooter />
     </Theme>
   );
 }
-var dataSE = [
-  {
-    icon: "fa fa-comments-o",
-    title: "Lorem ipsum",
-    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
-  },
-  {
-    icon: "fa fa-bullhorn",
-    title: "Lorem ipsum",
-    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
-  },
-  {
-    icon: "fa fa-group",
-    title: "Lorem ipsum",
-    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
-  },
-  {
-    icon: "fa fa-magic",
-    title: "Lorem ipsum",
-    text: "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.",
-  },
-];
 
 export default App;

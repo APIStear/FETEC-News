@@ -1,6 +1,8 @@
 const ctr = {},
       User = require('../models/user'),
       { OAuth2Client } = require('google-auth-library'),
+      jwt = require('jsonwebtoken'),
+      MyError = require('../models/MyError'),
       client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 ctr.googleAuth = () => async (req, res, next) => {
@@ -26,6 +28,17 @@ ctr.googleAuth = () => async (req, res, next) => {
 
   const jwtToken = user.generateToken();
   return res.status(201).json({user, firstLogin, token: jwtToken});
+}
+
+ctr.adminAuth = () => async (req, res, next) => {
+  const {password} = req.body;
+
+  if(password !== process.env.ADMIN_PW) {
+    return Promise.reject(new MyError(400, "Contraseña incorrecta"));
+  }
+  
+  const token = jwt.sign({admin: process.env.ADMIN_PW}, process.env.JWT_SECRET);
+  return res.status(200).json({token});
 }
 
 module.exports = ctr;

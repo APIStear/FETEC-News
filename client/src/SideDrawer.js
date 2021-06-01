@@ -3,7 +3,8 @@ import { IconButton, Drawer, Button } from "@material-ui/core"
 import { Menu } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core/styles"
 import { List, ListItem, ListItemText } from "@material-ui/core"
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { deleteToken, deleteUserId } from "./TokenUtilities";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -19,9 +20,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const SideDrawer = ({ navLinks }) => {
+const SideDrawer = ({ navLinks, status, loginHandler }) => {
   const [state, setState] = useState({ right: false });
   const classes = useStyles();
+  let history = useHistory();
+  let location = useLocation();
+
   const toggleDrawer = (anchor, open) => event => {
     if (
       event.type === "keydown" &&
@@ -32,6 +36,13 @@ const SideDrawer = ({ navLinks }) => {
     setState({ [anchor]: open })
   }
   
+  const _logout = _ => {
+    deleteToken();
+    deleteUserId();
+    loginHandler(false);
+    history.push("/", {success: "Se ha cerrado la sesión exitosamente."});
+  }
+
   const sideDrawerList = anchor => (
     <div
       className={classes.list}
@@ -48,16 +59,32 @@ const SideDrawer = ({ navLinks }) => {
           </Link>
         ))}
         <ListItem>
-          <Button
-              to="/login"
-              component={Link}
-              variant="contained"
-              color="primary"
-              disableElevation
-              className={classes.linkText}
-          >
-            Login
-          </Button> 
+          {
+            status?
+              <Button 
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  className={classes.linkText}
+                  onClick={_logout}
+              >
+                Logout
+              </Button>
+            :
+              <Button
+                  to={{
+                    pathname: "/login",
+                    state: { from: location }
+                  }}
+                  component={Link}
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  className={classes.linkText}
+              >
+                Login
+              </Button> 
+          }
         </ListItem>
       </List>
     </div>
