@@ -18,7 +18,7 @@ const EventList = ({events}) => {
          variant="contained"
          color="primary"
          component={Link}
-         to={`/event?eventId=${event._id}`}
+         to={`/edit-event?eventId=${event._id}`}
          disableElevation
          className={`${classes.linkText} ${classes.buttonMargin}`}
        >
