@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: theme.spacing(3),
+    paddingTop: theme.spacing(4),
     "& h2": {
       marginTop: theme.spacing(1)
     },
@@ -55,7 +56,7 @@ const initialState = {
   email: "",
   gender: "",
   careerProgram: "",
-  semester: 1,
+  semester: 0,
   isTec21: false,
   schoolProgram: ""
 }
@@ -118,11 +119,13 @@ const UserDashboard = ({history}) => {
     
   const _edit = () => {
     if(isWhiteSpaceOrEmpty(state.careerProgram)) {
-      toast.error("Debes elegir una carrera");
+      return toast.error("Debes elegir una carrera");
     } else if(isWhiteSpaceOrEmpty(state.gender)) {
-      toast.error("Debes elegir un género");
+      return toast.error("Debes elegir un género");
     } else if(isWhiteSpaceOrEmpty(state.schoolProgram)) {
-      toast.error("Debes elegir un plan");
+      return toast.error("Debes elegir un plan");
+    } else if(!state.semester || state.semester >= 13 || state.semester <= 0) {
+      return toast.error("Semestre invalido")
     }
 
     axios.put(`${process.env.REACT_APP_API_DOMAIN}/api/users/${getUserId()}`,
@@ -153,10 +156,7 @@ const UserDashboard = ({history}) => {
     if(name === 'semester') {
       // Checking for integer
       let parsed = parseInt(value);
-      // Check for 1-12 range
-      if(parsed && parsed < 13 && parsed > 0){
-        dispatch({field: name, value: parsed})
-      }
+      dispatch({field: name, value: parsed})
       return null;
     } else {
       dispatch({ field: name, value: value })
