@@ -5,4 +5,6 @@ const express = require('express'),
 
 router.post("/google", aHandler(authCtr.googleAuth()));
 
+router.post("/admin", aHandler(authCtr.adminAuth()));
+
 module.exports = router;
