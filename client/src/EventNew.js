@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
+// import ReactTooltip from 'react-tooltip';
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -99,7 +100,7 @@ export default function EventNew() {
               {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
             </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos"/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos" data-tip='Las urls deben ir separadas por espacios'/>
               <TextField id="location" fullWidth label="Lugar"/>
             </div>
           </div>
@@ -112,7 +113,7 @@ export default function EventNew() {
           />
           <p>Hacer RSVP</p>
         </Grid>
-        <Button variant="contained" color="primary" className={classes.spacingTop} onClick={_createEvent}>
+        <Button variant="contained" color="primary" className={classes.spacingTop} onClick={_createEvent} style={{color: '#FFFFFF'}}>
           Crear evento
         </Button>
       </div>

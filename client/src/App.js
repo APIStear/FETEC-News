@@ -10,6 +10,7 @@ import EventView from './EventView';
 import EditEvent from './EditEvent';
 import EventNew from './EventNew';
 import AllEvents from './AllEvents';
+import Admin from './Admin';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(getToken());
@@ -27,6 +28,7 @@ function App() {
           <Route path='/edit-event' component={EditEvent}/>
           <Route path='/new-event' component={EventNew}/>
           <Route path='/events' component={AllEvents}/>
+          <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
         </Switch>
         <PageFooter />
       </Router>
