@@ -3,13 +3,12 @@ const Event = require('../models/event'),
 
 ctr.create = () => async (req, res, next) => {
   const {
-    title,
+    title, 
     description,
     startDate,
     endDate,
-    location,
-    isRSVP,
-    canceled,
+    location, 
+    isRSVP
   } = req.body;
 
   const event = new Event({
@@ -18,27 +17,25 @@ ctr.create = () => async (req, res, next) => {
     startDate,
     endDate,
     location,
-    isRSVP,
-    canceled,
+    isRSVP
   });
 
   await event.save();
-
+  
   return res.status(200).json({event});
 }
 
 ctr.edit = () => async (req, res, next) => {
   const {eventId} = req.params;
   const {
-    title,
+    title, 
     description,
     startDate,
     endDate,
-    location,
-    isRSVP,
-    canceled,
+    location, 
+    isRSVP
   } = req.body;
-
+  
   const event = await Event.updateEvent(
     eventId,
     title,
@@ -47,7 +44,6 @@ ctr.edit = () => async (req, res, next) => {
     endDate,
     location,
     isRSVP,
-    canceled,
   );
 
   return res.status(200).json({event});
@@ -66,7 +62,7 @@ ctr.getAll = () => async (req, res, next) => {
   // page & page size for pagination
   // all else is for filters
   let {startDate, endDate, title, page, pageSize} = req.query;
-
+  
   // Check for nonintegers
   page = parseInt(page) || 1;
   pageSize = parseInt(pageSize) || 10;

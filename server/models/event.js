@@ -32,10 +32,6 @@ const eventSchema = new mongoose.Schema({
   isRSVP: {
     type: Boolean,
   },
-  canceled: {
-    type: Boolean,
-    default: false,
-  },
   // list of user ids of users who have RSVPed
   RSVPlist: {
     type: [mongoose.Schema.Types.ObjectId],
@@ -53,7 +49,7 @@ const eventSchema = new mongoose.Schema({
 
 // DO NOT USE ARROW FUNCTIONS HERE
 // using arrow function (() => {}) does not allow the use of 'this'
-eventSchema.statics.updateEvent = async function(eventId, title, description, startDate, endDate, location, isRSVP, canceled) {
+eventSchema.statics.updateEvent = async function(eventId, title, description, startDate, endDate, location, isRSVP) {
   const event = await this.findOneAndUpdate(
     {_id: eventId, bActive: true},
     {
@@ -63,11 +59,10 @@ eventSchema.statics.updateEvent = async function(eventId, title, description, st
       endDate,
       location,
       isRSVP,
-      canceled,
     },
     {new: true}
   ).exec();
-
+  
   if(!event) {
     return Promise.reject(new MyError(404, "No se encontró el evento."));
   }
@@ -113,7 +108,7 @@ eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, 
 ]);
 
 
-  return {events, total, totalPages: Math.ceil(total/pageSize)};
+  return {events, total, totalPages: Math.ceil(total/pageSize)}; 
 }
 
 eventSchema.statics.getOne = async function(eventId){
@@ -153,14 +148,14 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
     _id: eventId,
     bActive: true,
   }).select('+RSVPlist').exec();
-
+ 
   if(!event) {
     return Promise.reject(new MyError(404, "No se encontró el evento."));
   }
 
   if(event.RSVPlist.includes(userId)) {
     return Promise.reject(new MyError(404, "El usuario ya reservó el evento."));
-  }
+  } 
 
   user.numRSVPs = user.numRSVPs + 1;
   event.RSVPlist.push(user._id);
