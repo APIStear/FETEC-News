@@ -27,6 +27,7 @@ function App() {
           <Route path='/edit-event' component={EditEvent}/>
           <Route path='/new-event' component={EventNew}/>
           <Route path='/events' component={AllEvents}/>
+          <Route path='/upcoming-events' component={AllEvents}/>
         </Switch>
         <PageFooter />
       </Router>

@@ -6,7 +6,6 @@ import { ToastContainer, toast} from 'react-toastify';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import './EventNew.css';
-import { useForm, Controller } from 'react-hook-form'
 
 const initialState = {
   title: "",
@@ -32,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 
 const EditEvent = ({ history, location }) => {
   const classes = useStyles();
-  const { setValue, register } = useForm({mode: 'onBlur'});
 
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
