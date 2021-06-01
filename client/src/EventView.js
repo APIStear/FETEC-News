@@ -92,7 +92,7 @@ const EventView = ({ history, location }) => {
           history.push("/", {error: error.response.data.message})
         } else {
           history.push('/', {error:"Hubo un error"});
-        }      
+        }
       })
 
   }, [eventId, history, location])

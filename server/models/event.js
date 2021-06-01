@@ -164,4 +164,15 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
   return true;
 }
 
+eventSchema.statics.getRSVPED = async function(eventId) {
+  const event = await this.findOne({
+    _id: eventId,
+    bActive:true,
+  }).select('RSVPlist').populate('RSVPlist').exec();
+  if(!event) {
+    return Promise.reject(new MyError(404, "No se encontró el evento."));
+  }
+  return event.RSVPlist
+}
+
 module.exports = mongoose.model('Event', eventSchema);
