@@ -32,7 +32,7 @@ function App() {
       <Banner
         data={{ title: "Comité Electoral", paragraph: "Eventos Estudiantiles" }}
       />
-      <SpecialEvents data={dataSE} />
+      {/* <SpecialEvents data={dataSE} /> */}
       <Gallery/>
       <PageFooter />
     </Theme>
