@@ -13,13 +13,8 @@ const Header = (props) => {
                   <span></span>
                 </h1>
                 <p>{props.data ? props.data.paragraph : 'Loading'}</p>
-<<<<<<< HEAD
-                <a
-                  href='/events'
-=======
                 <Link
                   to='/events'
->>>>>>> e2aec2db7d6c7ab9f14fce9d94ac2ef171318336
                   className='btn btn-custom btn-lg page-scroll'
                 >
                   Todos los Eventos

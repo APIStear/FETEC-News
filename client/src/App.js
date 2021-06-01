@@ -34,14 +34,6 @@ function App() {
           <Route path='/*' component={Home} />
         </Switch>
       </Router>
-<<<<<<< HEAD
-      <Banner
-        data={{ title: "Comité Electoral", paragraph: "Eventos Estudiantiles" }}
-      />
-      {/* <SpecialEvents data={dataSE} /> */}
-      <Gallery/>
-=======
->>>>>>> e2aec2db7d6c7ab9f14fce9d94ac2ef171318336
       <PageFooter />
     </Theme>
   );
