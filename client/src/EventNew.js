@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
-import ReactTooltip from 'react-tooltip';
+// import ReactTooltip from 'react-tooltip';
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -82,7 +82,7 @@ export default function EventNew() {
               <div className="EventDate">
                 <p>Fecha de inicio: </p>
                 <DatePicker id="startDate"
-                selected={startDate} 
+                selected={startDate}
                 onChange={date => setStartDate(date)}
                 showTimeSelect />
               </div>
@@ -90,7 +90,7 @@ export default function EventNew() {
                 <p>Fecha de fin: </p>
                 {/* <DatePicker   selected={endDate} onChange={date => setEndDate(date)} showTimeSelect /> */}
                 <DatePicker id="endDate"
-                selected={endDate} 
+                selected={endDate}
                 onChange={date => setEndDate(date)}
                 showTimeSelect
                 minDate={startDate}
@@ -100,7 +100,6 @@ export default function EventNew() {
             </div>
             <div className="EventNew-row">
               <TextField id="imgKeys" fullWidth label="URL de fotos" data-tip='Las urls deben ir separadas por espacios'/>
-              <ReactTooltip />              
               <TextField id="location" fullWidth label="Lugar"/>
             </div>
           </div>
