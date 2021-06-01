@@ -7,14 +7,27 @@ import { Link } from 'react-router-dom';
 
 // TODO: Esto solo puede ser accesado como admin
 const AllEvents = ({ history, location }) => {
-
   let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
   const [eventList, setEvents] = useState([]);
 
+  const _query = _ => {
+    let path = location.pathname;
+    let query = {}
+
+    if (path = "/upcoming-events") {
+      query = {
+        startDate: new Date()
+      };
+    }
+
+    return query;
+  }
+
   useEffect(() => {
-    axios.get(`${url}/api/events/`)
+    axios.get(`${url}/api/events/`, _query())
       .then(response => {
         let events = response.data.events
+        _query()
         let allEvents = events.map((event) => {
           event.startDate = new Date(event.startDate)
           return (
