@@ -7,6 +7,7 @@ import { getToken } from './TokenUtilities';
 import PageFooter from './PageFooter'
 import Theme from './Theme';
 import EventView from './EventView';
+import EventNew from './EventNew';
 import Admin from './Admin';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             render = {(props) => (<SignIn {... props}  loginHandler={setLoggedIn} />)}
           />
           <Route path='/event' component={EventView}/>
+          <Route path='/new-event' component={EventNew}/>
           <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
         </Switch>
         <PageFooter />
