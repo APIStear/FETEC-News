@@ -5,11 +5,28 @@ const useStyles = makeStyles({
   linkText: {
     textDecoration: `none`,
     color: `white`
-  },
+  }
 })
 
 const EventList = ({events}) => {
   const classes = useStyles();
+
+  const _get_buttons = (event) => {
+    if (window.location.href.includes("/dashboard")) {
+      return (
+       <Button
+         variant="contained"
+         color="primary"
+         component={Link}
+         to={`/event?eventId=${event._id}`}
+         disableElevation
+         className={`${classes.linkText} ${classes.buttonMargin}`}
+       >
+       Editar Evento
+       </Button>
+      )
+    }
+  }
 
   return (
     <div>
@@ -20,7 +37,7 @@ const EventList = ({events}) => {
           <h2 className="EventLocation">Lugar</h2>
       </div>
       <div className="EventsContainer">
-        
+
         {
           events.map((event) => {
             event.startDate = new Date(event.startDate)
@@ -47,15 +64,16 @@ const EventList = ({events}) => {
                     <div className="EventDetails"> {event.location} </div>
                   </div>
                   <div className="EventDetails">
+                    {_get_buttons(event)}
                     <Button
-                      variant="contained"
-                      color="primary"
-                      component={Link}
-                      to={`/event?eventId=${event._id}`}
-                      disableElevation
-                      className={classes.linkText}
+                    variant="contained"
+                    color="primary"
+                    component={Link}
+                    to={`/event?eventId=${event._id}`}
+                    disableElevation
+                    className={classes.linkText}
                     >
-                      Ver más
+                    Ver más
                     </Button>
                   </div>
                 </div>
