@@ -72,8 +72,9 @@ export default function SignIn({loginHandler}) {
       })
       
   }
-  const _loginFailure = async error => {
-    toast.error(error);
+  const _loginFailure = error => {
+    console.log("ERROR: ", error);
+    toast.error(error.details);
   }
 
   useEffect(() => {
@@ -83,7 +84,7 @@ export default function SignIn({loginHandler}) {
     }
     if(localStorage.getItem("token")){
       // Check first if usable, if not stay
-      history.push("/", {success: "You are already logged in."})
+      history.push("/", {success: "Ya iniciaste sesión."})
     }
   }, [history, location]);
 

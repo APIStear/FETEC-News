@@ -90,13 +90,11 @@ const EventView = ({ history, location }) => {
         response.data.event.startDate = new Date(response.data.event.startDate)
         response.data.event.endDate = new Date(response.data.event.endDate)
 
-        console.log('response.data.event :>> ', response.data.event);
         setEvent(response.data.event)
         setCanceled(response.data.event.canceled);
         document.title = `${response.data.event.title} | CE News`
         const userId = getUserId()
         if(userId) {
-          console.log(getToken())
           return axios
             .get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${userId}`,
             {

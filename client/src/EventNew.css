@@ -26,3 +26,11 @@ main {
 .EventNew-row{
     display: flex;
 }
+.EventDate {
+    width: 50%;
+    align-content: flex-start;
+    display: flex;
+    flex-flow: column;
+    text-align: start;
+    color: #888888;
+}
