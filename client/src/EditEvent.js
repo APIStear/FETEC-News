@@ -6,6 +6,8 @@ import { ToastContainer, toast} from 'react-toastify';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import './EventNew.css';
+import { isAdminUser } from './TokenUtilities';
+
 
 const initialState = {
   title: "",
@@ -29,8 +31,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function userRedirect(history) {
+  if (!isAdminUser()) {
+    history.push("/events");
+  }
+}
+
 const EditEvent = ({ history, location }) => {
   const classes = useStyles();
+
+  userRedirect(history);
 
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");

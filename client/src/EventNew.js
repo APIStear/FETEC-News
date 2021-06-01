@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
-// import ReactTooltip from 'react-tooltip';
 import "react-datepicker/dist/react-datepicker.css";
+import { isAdminUser } from './TokenUtilities';
 
 
 
@@ -20,7 +20,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function EventNew() {
+function userRedirect(history) {
+  if (!isAdminUser()) {
+    history.push("/events");
+  }
+}
+
+const EventNew = ({ history, location }) => {
+  userRedirect(history);
   const classes = useStyles();
 
   const _fix_img_urls = (imgKeys) => {
@@ -120,3 +127,5 @@ export default function EventNew() {
     </Container>
   );
 }
+
+export default EventNew;
