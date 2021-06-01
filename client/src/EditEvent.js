@@ -61,13 +61,6 @@ const EditEvent = ({ history, location }) => {
      });
   }, [eventId, history, location]);
 
-  const _fix_url_images = (images) => {
-    if (images) {
-      return images.join(" ");
-    }
-    return "juan";
-  }
-
   const _editEvent = _ => {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
@@ -109,8 +102,8 @@ const EditEvent = ({ history, location }) => {
         <Grid container>
           <div className="EventNew-InputGrid">
             <div className="EventNew-row">
-              <TextField name="title" id="title" fullWidth label="Titulo" value={event.title}/>
-              <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
+              <TextField name="title" id="title" fullWidth label="Titulo" value={event.title} onChange={e => setEvent({...event, title: e.target.value})}/>
+              <TextField id="studentGroup" name="studentGroup" fullWidth label="Grupo que lo organiza" value={event.studentGroup} onChange={e => setEvent({...event, studentGroup: e.target.value})}/>
             </div>
             <div className="EventNew-row">
               <div className="EventDate">
@@ -130,16 +123,18 @@ const EditEvent = ({ history, location }) => {
                 />
               </div> </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos" />
-              <TextField id="location" fullWidth label="Lugar" />
+              <TextField id="imgKeys" fullWidth label="URL de fotos" name="imgKeys" value={event.imgKeys.join(" ")} onChange={e => setEvent({...event, imgKeys: _fix_img_urls(e.target.value)})}/>
+              <TextField id="location" fullWidth label="Lugar" name="location" value={event.location} onChange={e => setEvent({...event, location: e.target.value})} />
             </div>
           </div>
-          <TextField id="description" required fullWidth label="Descripción" />
+          <TextField id="description" required fullWidth label="Descripción" name="description" value={event.description} onChange={e => setEvent({...event, description: e.target.value})} />
           <Checkbox
             name="RSVP"
             color="primary"
             id="isRSVP"
             label="Employed"
+            checked={event.isRSVP}
+            onChange={e => setEvent({...event, isRSVP: e.target.value })}
             // defaultChecked={`${event.isRSVP}`}
           />
           <p>Hacer RSVP</p>
