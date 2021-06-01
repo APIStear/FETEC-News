@@ -6,6 +6,7 @@ import { ToastContainer, toast} from 'react-toastify';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import './EventNew.css';
+import { useForm, Controller } from 'react-hook-form'
 
 const initialState = {
   title: "",
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditEvent = ({ history, location }) => {
   const classes = useStyles();
+  const { setValue, register } = useForm({mode: 'onBlur'});
 
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
@@ -47,12 +49,15 @@ const EditEvent = ({ history, location }) => {
   useEffect(() => {
    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
      .then(response => {
-       let sDate = new Date(response.data.event.startDate);
-       let eDate = new Date(response.data.event.startDate);
-       setEvent(response.data.event);
+       let event = response.data.event
+       let sDate = new Date(event.startDate);
+       let eDate = new Date(event.startDate);
+       setEvent(event);
        setStartDate(sDate);
        setEndDate(eDate);
+
        document.title = `Editar ${response.data.event.title} | CE News`
+       console.log(event);
      }).catch(error => {
        console.log(error);
      });
@@ -76,7 +81,7 @@ const EditEvent = ({ history, location }) => {
     let isRSVP = document.getElementById("isRSVP").checked;
 
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
-    axios.put(`${url}/api/events/`, {
+    axios.put(`${url}/api/events/${eventId}`, {
       title: title,
       studentGroup: studentGroup,
       description: description,
@@ -86,8 +91,8 @@ const EditEvent = ({ history, location }) => {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-      // TODO: Redireccionar a todos los eventos
       toast.success("Evento editado correctamente")
+      history.push(`/event?eventId=${eventId}`);
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
@@ -106,8 +111,8 @@ const EditEvent = ({ history, location }) => {
         <Grid container>
           <div className="EventNew-InputGrid">
             <div className="EventNew-row">
-              <TextField id="title" fullWidth label="Titulo" required value={`${event.title || ""}`}/>
-              <TextField id="studentGroup" fullWidth label="Grupo que lo organiza" value={`${event.studentGroup || ""}`}/>
+              <TextField name="title" id="title" fullWidth label="Titulo" value={event.title}/>
+              <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
             </div>
             <div className="EventNew-row">
               <div className="EventDate">
@@ -127,17 +132,17 @@ const EditEvent = ({ history, location }) => {
                 />
               </div> </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos" value={_fix_url_images(event.imgKeys)}/>
-              <TextField id="location" fullWidth label="Lugar" value={`${event.location || ""}`}/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos" />
+              <TextField id="location" fullWidth label="Lugar" />
             </div>
           </div>
-          <TextField id="description" required fullWidth label="Descripción" value={`${event.description || ""}`}/>
+          <TextField id="description" required fullWidth label="Descripción" />
           <Checkbox
             name="RSVP"
             color="primary"
             id="isRSVP"
             label="Employed"
-            defaultChecked={`${event.isRSVP}`}
+            // defaultChecked={`${event.isRSVP}`}
           />
           <p>Hacer RSVP</p>
         </Grid>
