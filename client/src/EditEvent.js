@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from "axios";
 import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
-import './EventNew.css';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-// import ReactTooltip from 'react-tooltip';
-import "react-datepicker/dist/react-datepicker.css";
+import './EventNew.css';
 
-
+const initialState = {
+  title: "",
+  description: "",
+  startDate: new Date(),
+  imgKeys: [],
+  endDate: new Date(),
+  location: "",
+  isRSVP: false,
+  RSVPlist: [],
+  studentGroup: ""
+};
 
 const useStyles = makeStyles((theme) => ({
   spacingBottom: {
@@ -20,23 +29,42 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function EventNew() {
+const EditEvent = ({ history, location }) => {
   const classes = useStyles();
 
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
-  const [startDate, setStartDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [event, setEvent] = useState(initialState);
 
-  const _createEvent = _ => {
+  const queryString = require("query-string");
+  let parsed = queryString.parse(location.search);
+  let { eventId } = parsed;
+
+  useEffect(() => {
+   axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
+     .then(response => {
+       let event = response.data.event
+       let sDate = new Date(event.startDate);
+       let eDate = new Date(event.startDate);
+       setEvent(event);
+       setStartDate(sDate);
+       setEndDate(eDate);
+
+       document.title = `Editar ${response.data.event.title} | CE News`
+       console.log(event);
+     }).catch(error => {
+       console.log(error);
+     });
+  }, [eventId, history, location]);
+
+  const _editEvent = _ => {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
     let description = document.getElementById("description").value;
-    // const [startDate, setStartDate] = useState(new Date());
-    // return (
-    //   <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-    // );
     let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let imgKeys = document.getElementById("imgKeys").value;
@@ -44,8 +72,7 @@ export default function EventNew() {
     let isRSVP = document.getElementById("isRSVP").checked;
 
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
-
-    axios.post(`${url}/api/events/`, {
+    axios.put(`${url}/api/events/${eventId}`, {
       title: title,
       studentGroup: studentGroup,
       description: description,
@@ -55,9 +82,8 @@ export default function EventNew() {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-      // TODO: Redireccionar a todos los eventos
-      toast.success("Evento registrado correctamente");
-      window.location.replace(`${url}/events`);
+      toast.success("Evento editado correctamente")
+      history.push(`/event?eventId=${eventId}`);
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
@@ -65,9 +91,9 @@ export default function EventNew() {
   }
 
   return(
-    <Container component="main" class="main" maxWidth="s">
+    <Container component="main" maxWidth="lg">
       <div className={classes.spacing}>
-        <h1 className="EventNew-header">Nuevo Evento</h1>
+        <h1 className="EventNew-header">Editar Evento</h1>
         <ToastContainer
           position="top-right"
           draggable={false}
@@ -76,8 +102,8 @@ export default function EventNew() {
         <Grid container>
           <div className="EventNew-InputGrid">
             <div className="EventNew-row">
-              <TextField id="title" fullWidth label="Titulo" required/>
-              <TextField id="studentGroup" fullWidth label="Grupo que lo organiza"/>
+              <TextField name="title" id="title" fullWidth label="Titulo" value={event.title} onChange={e => setEvent({...event, title: e.target.value})}/>
+              <TextField id="studentGroup" name="studentGroup" fullWidth label="Grupo que lo organiza" value={event.studentGroup} onChange={e => setEvent({...event, studentGroup: e.target.value})}/>
             </div>
             <div className="EventNew-row">
               <div className="EventDate">
@@ -89,34 +115,36 @@ export default function EventNew() {
               </div>
               <div className="EventDate">
                 <p>Fecha de fin: </p>
-                {/* <DatePicker   selected={endDate} onChange={date => setEndDate(date)} showTimeSelect /> */}
                 <DatePicker id="endDate"
                 selected={endDate}
                 onChange={date => setEndDate(date)}
                 showTimeSelect
                 minDate={startDate}
                 />
-              </div>
-              {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
-            </div>
+              </div> </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos" data-tip='Las urls deben ir separadas por espacios'/>
-              <TextField id="location" fullWidth label="Lugar"/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos" name="imgKeys" value={event.imgKeys.join(" ")} onChange={e => setEvent({...event, imgKeys: _fix_img_urls(e.target.value)})}/>
+              <TextField id="location" fullWidth label="Lugar" name="location" value={event.location} onChange={e => setEvent({...event, location: e.target.value})} />
             </div>
           </div>
-          <TextField id="description" required fullWidth label="Descripción"/>
+          <TextField id="description" required fullWidth label="Descripción" name="description" value={event.description} onChange={e => setEvent({...event, description: e.target.value})} />
           <Checkbox
             name="RSVP"
             color="primary"
             id="isRSVP"
             label="Employed"
+            checked={event.isRSVP}
+            onChange={e => setEvent({...event, isRSVP: e.target.value })}
+            // defaultChecked={`${event.isRSVP}`}
           />
           <p>Hacer RSVP</p>
         </Grid>
-        <Button variant="contained" color="primary" className={classes.spacingTop} onClick={_createEvent} disableElevation style={{color: '#FFFFFF'}}>
-          Crear evento
+        <Button variant="contained" color="primary" className={classes.spacingTop} onClick={_editEvent}>
+          Editar evento
         </Button>
       </div>
     </Container>
   );
 }
+
+export default EditEvent;

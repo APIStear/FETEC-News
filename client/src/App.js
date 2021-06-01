@@ -7,6 +7,7 @@ import { getToken } from './TokenUtilities';
 import PageFooter from './PageFooter'
 import Theme from './Theme';
 import EventView from './EventView';
+import EditEvent from './EditEvent';
 import EventNew from './EventNew';
 import AllEvents from './AllEvents';
 import Admin from './Admin';
@@ -27,6 +28,7 @@ function App() {
             render = {(props) => (<SignIn {... props}  loginHandler={setLoggedIn} />)}
           />
           <Route path='/event' component={EventView}/>
+          <Route path='/edit-event' component={EditEvent}/>
           <Route path='/new-event' component={EventNew}/>
           <Route path='/events' component={AllEvents}/>
           <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>

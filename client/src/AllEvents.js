@@ -16,14 +16,14 @@ const AllEvents = ({ history, location }) => {
   useEffect(() => {
     axios.get(`${url}/api/events/`)
       .then(response => {
-        const events = response.data.events 
+        const events = response.data.events
         setEvents(events);
       }).catch(error => {
         if (error.response) {
           toast.error(error.response.data.message)
         } else {
           toast.error("Hubo un error");
-        }  
+        }
       });
   }, [history, location, url]);
 
