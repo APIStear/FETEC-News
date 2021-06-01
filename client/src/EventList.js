@@ -25,7 +25,7 @@ const EventList = ({events}) => {
           events.map((event) => {
             event.startDate = new Date(event.startDate)
             return (
-              <div key={event.title}>
+              <div key={event._id}>
                 <div className="EventCard">
                   <div className="EventDate">
                     <div className="EventDateDay">
