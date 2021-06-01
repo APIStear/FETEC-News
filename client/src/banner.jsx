@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const Header = (props) => {
   return (
     <header id='header'>
@@ -11,12 +13,12 @@ const Header = (props) => {
                   <span></span>
                 </h1>
                 <p>{props.data ? props.data.paragraph : 'Loading'}</p>
-                <a
-                  href='/events'
+                <Link
+                  to='/events'
                   className='btn btn-custom btn-lg page-scroll'
                 >
                   Todos los Eventos
-                </a>{' '}
+                </Link>{' '}
               </div>
             </div>
           </div>
