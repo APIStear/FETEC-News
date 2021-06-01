@@ -14,7 +14,7 @@ const AllEvents = ({ history, location }) => {
     let path = location.pathname;
     let query = {}
 
-    if (path = "/upcoming-events") {
+    if (path === "/upcoming-events") {
       query = {
         startDate: new Date()
       };
