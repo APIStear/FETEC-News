@@ -59,7 +59,7 @@ const AllEvents = ({ history, location }) => {
         history.push('/', {error:"Hubo un error"});
         console.log(error);
       });
-  }, [eventList, history, location]);
+  }, [eventList, history, location, url]);
 
   return (
     <div className="EventsMain" >
