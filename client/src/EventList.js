@@ -14,7 +14,7 @@ const EventList = ({events}) => {
   const _get_buttons = (event) => {
     if (window.location.href.includes("/dashboard")) {
       return (
-       <Button
+       <Button fullWidth
          variant="contained"
          color="primary"
          component={Link}
@@ -22,7 +22,7 @@ const EventList = ({events}) => {
          disableElevation
          className={`${classes.linkText} ${classes.buttonMargin}`}
        >
-       Editar Evento
+       Editar
        </Button>
       )
     }
@@ -65,13 +65,13 @@ const EventList = ({events}) => {
                   </div>
                   <div className="EventDetails">
                     {_get_buttons(event)}
-                    <Button
-                    variant="contained"
+                    <Button fullWidth style={{marginTop: "5px"}}
+                    variant="outlined"
                     color="primary"
                     component={Link}
                     to={`/event?eventId=${event._id}`}
                     disableElevation
-                    className={classes.linkText}
+                    // className={classes.linkText}
                     >
                     Ver más
                     </Button>
