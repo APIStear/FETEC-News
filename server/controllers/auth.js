@@ -20,9 +20,13 @@ ctr.googleAuth = () => async (req, res, next) => {
     user = await User({ 
         email: email,
         name: name,
+        profilePicture: picture,
         // Takes studentId from email
         studentId: email.substr(0, email.lastIndexOf("@")).toUpperCase()
     })
+    await user.save();
+  } else {
+    user.profilePicture = picture;
     await user.save();
   }
 

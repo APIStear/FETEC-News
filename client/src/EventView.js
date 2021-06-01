@@ -4,7 +4,7 @@ import {Box, Button, Container, Grid, Typography} from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import Image from 'material-ui-image'
-import { getUserId, getToken, deleteUserId, deleteToken } from './TokenUtilities';
+import { getUserId, getToken, deleteUserId, deleteToken, isAdminUser } from './TokenUtilities';
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -75,7 +75,7 @@ const EventView = ({ history, location }) => {
         setEvent(response.data.event)
         document.title = `${response.data.event.title} | CE News`
         const userId = getUserId()
-        if(userId) {
+        if(userId && !isAdminUser()) {
           return axios
             .get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${userId}`,
             {
@@ -103,7 +103,7 @@ const EventView = ({ history, location }) => {
     }
     return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
     {
-      headers: { Authorization: `Bearer ${getToken()}` } 
+      headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then(response => {
       setRSVPed(response.data.RSVPed);
@@ -121,7 +121,7 @@ const EventView = ({ history, location }) => {
         }
       } else {
         toast.error("Hubo un error")
-      }   
+      }
     })
   }
 
@@ -193,7 +193,7 @@ const EventView = ({ history, location }) => {
                       variant="outlined"
                       color="primary"
                       className={classes.linkText}
-                      disabled={RSVPed}
+                      disabled={RSVPed || isAdminUser()}
                       onClick={_RSVP}
                     >
                     {RSVPed? 'RSVPed' : 'RSVP'}
