@@ -42,15 +42,14 @@ const AdminDashboard = () => {
         setEvents(response.data.events);
       }).catch(error => {
         history.push('/', {error:"Hubo un error"});
-        console.log(error);
       });
   }, [history, location]);
 
   const _search = value => {
     if(value !== '') {
-      value = `?title=${value}`
+      value = `?title=${value}&sort=startDate`
     }
-    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}&sort=startDate`)
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}`)
       .then(response => {
         setEvents(response.data.events);
       })
