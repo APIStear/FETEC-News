@@ -18,7 +18,8 @@ const initialState = {
   location: "",
   isRSVP: false,
   RSVPlist: [],
-  studentGroup: ""
+  studentGroup: "",
+  canceled: false,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +82,8 @@ const EditEvent = ({ history, location }) => {
     let location = document.getElementById("location").value;
     let isRSVP = document.getElementById("isRSVP").checked;
 
+    console.log(_fix_img_urls(imgKeys))
+
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
     axios.put(`${url}/api/events/${eventId}`, {
       title: title,
@@ -133,7 +136,7 @@ const EditEvent = ({ history, location }) => {
                 />
               </div> </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos" name="imgKeys" value={event.imgKeys.join(" ")} onChange={e => setEvent({...event, imgKeys: _fix_img_urls(e.target.value)})}/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos (separadas por espacios)" name="imgKeys" value={event.imgKeys.join(" ")} onChange={e => setEvent({...event, imgKeys: _fix_img_urls(e.target.value)})}/>
               <TextField id="location" fullWidth label="Lugar" name="location" value={event.location} onChange={e => setEvent({...event, location: e.target.value})} />
             </div>
           </div>

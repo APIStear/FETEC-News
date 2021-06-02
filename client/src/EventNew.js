@@ -31,6 +31,8 @@ const EventNew = ({ history, location }) => {
   const classes = useStyles();
 
   const _fix_img_urls = (imgKeys) => {
+    console.log(imgKeys);
+    console.log(imgKeys.split(" ").filter(e => e !== ""));
     return imgKeys.split(" ").filter(e => e !== "");
   }
   const [startDate, setStartDate] = useState(new Date());
@@ -40,10 +42,6 @@ const EventNew = ({ history, location }) => {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
     let description = document.getElementById("description").value;
-    // const [startDate, setStartDate] = useState(new Date());
-    // return (
-    //   <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-    // );
     let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let imgKeys = document.getElementById("imgKeys").value;
@@ -51,6 +49,9 @@ const EventNew = ({ history, location }) => {
     let isRSVP = document.getElementById("isRSVP").checked;
 
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
+
+    console.log(imgKeys);
+    console.log(_fix_img_urls(imgKeys));
 
     axios.post(`${url}/api/events/`, {
       title: title,
@@ -64,7 +65,7 @@ const EventNew = ({ history, location }) => {
     }).then((response) => {
       // TODO: Redireccionar a todos los eventos
       toast.success("Evento registrado correctamente");
-      window.location.replace(`${url}/events`);
+      history.push("/events");
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
@@ -107,7 +108,7 @@ const EventNew = ({ history, location }) => {
               {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
             </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos" data-tip='Las urls deben ir separadas por espacios'/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos (separadas por espacios)"/>
               <TextField id="location" fullWidth label="Lugar"/>
             </div>
           </div>
