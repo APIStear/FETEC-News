@@ -33,7 +33,8 @@ ctr.edit = () => async (req, res, next) => {
     startDate,
     endDate,
     location, 
-    isRSVP
+    isRSVP,
+    imgKeys,
   } = req.body;
   
   const event = await Event.updateEvent(
@@ -44,6 +45,7 @@ ctr.edit = () => async (req, res, next) => {
     endDate,
     location,
     isRSVP,
+    imgKeys,
   );
 
   return res.status(200).json({event});
