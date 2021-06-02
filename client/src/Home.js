@@ -12,7 +12,7 @@ const Home = () => {
   const [nextEvents, setNextEvents] = useState([]);
   const [pastEvents, setPastEvents] = useState([]);
 
-    
+
   const getNextEvents = () => {
     return axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events?startDate=${new Date()}&page=1&pageSize=4`)
       .then(response => {
@@ -23,7 +23,7 @@ const Home = () => {
           toast.error(error.response.data.message)
         } else {
           toast.error("Hubo un error");
-        } 
+        }
       })
   }
 
@@ -33,17 +33,18 @@ const Home = () => {
         setPastEvents(response.data.events);
 
       })
-      
+
       .catch(error =>{
         if (error.response) {
           toast.error(error.response.data.message)
         } else {
           toast.error("Hubo un error");
-        } 
+        }
       })
   }
 
   useEffect(async () => {
+    document.title = 'Comité Ejecutivo'
     if(location && location.state && location.state.error !== "") {
       if(location.state.error !== "") {
         toast.error(location.state.error)
@@ -60,7 +61,7 @@ const Home = () => {
 
   return (
     <div>
-      <ToastContainer 
+      <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}

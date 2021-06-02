@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 
 const Dashboard = () => {
   useEffect(() => {
-    document.title = 'Dashboard | CE News'
+    document.title = 'Dashboard | Comité Ejecutivo'
   }, [])
-  return isAdminUser() ? ( 
+  return isAdminUser() ? (
     <AdminDashboard/>
   ) : (
     <UserDashboard/>

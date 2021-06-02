@@ -7,7 +7,7 @@ import RSVPtable from "./RSVPtable";
 
 const useStyles = makeStyles((theme) => ({
   linkText: {
-    margin: theme.spacing(1,2),
+    margin: theme.spacing(1,0),
     textDecoration: `none`,
     color: `white`
   },
@@ -15,7 +15,26 @@ const useStyles = makeStyles((theme) => ({
 
 const EventList = ({events, toast}) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(events.map(() => false)) 
+  const _get_buttons = (event) => {
+    if (window.location.href.includes("/dashboard")) {
+      return (
+       <Button
+         variant="contained"
+         color="primary"
+         component={Link}
+         to={`/edit-event?eventId=${event._id}`}
+         disableElevation
+         className={`${classes.linkText} ${classes.buttonMargin}`}
+       >
+       Editar
+       </Button>
+      )
+    }
+  }
+
+
+  const [expanded, setExpanded] = useState(events.map(() => false))
+
   return (
     <div>
 
@@ -25,7 +44,7 @@ const EventList = ({events, toast}) => {
           <h2 className="EventLocation">Lugar</h2>
       </div>
       <div className="EventsContainer">
-        
+
         {
           events.map((event, i) => {
             event.startDate = new Date(event.startDate)
@@ -52,19 +71,19 @@ const EventList = ({events, toast}) => {
                     <div className="EventDetails"> {event.location} </div>
                   </div>
                   <div className="EventDetails">
-                    <Button
-                      variant="contained"
+                    <Button fullWidth style={{marginTop: "5px"}}
+                     variant="outlined"
                       color="primary"
                       component={Link}
                       to={`/event?eventId=${event._id}`}
                       disableElevation
-                      className={classes.linkText}
                     >
                       Ver más
                     </Button>
                     {
                       isAdminUser() ?
                       <Button
+                          fullWidth
                           variant="contained"
                           color="primary"
                           className={classes.linkText}
@@ -77,10 +96,10 @@ const EventList = ({events, toast}) => {
                           }}
                           endIcon={expanded[i]? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
                       >
-                        {expanded[i]? 'Cerrar lista' : 'Ver RSVPed'}
+                        {expanded[i]? 'Cerrar' : 'Ver RSVPed'}
                       </Button>
-                      
-                      : 
+
+                      :
                       ''
                     }
 

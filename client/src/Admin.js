@@ -48,7 +48,7 @@ const Admin = ({ loginHandler }) => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    document.title = 'Admin | CE News'
+    document.title = 'Admin | Comité Ejecutivo'
     if(location && location.state && location.state.error !== "") {
       toast.error(location.state.error)
     }
@@ -78,7 +78,7 @@ const Admin = ({ loginHandler }) => {
         } else return toast.error(error.message);
       });
   }
-  
+
   const _handleKeyDown = e => {
     if (e.key === "Enter") {
       _login(e);
@@ -86,7 +86,7 @@ const Admin = ({ loginHandler }) => {
   };
   return (
     <Container component="main" maxWidth="lg">
-      <ToastContainer 
+      <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}
@@ -97,7 +97,7 @@ const Admin = ({ loginHandler }) => {
         <Grid container >
           <Grid item xs={6} className={classes.title}>
           <Typography component="h1" variant="h2">
-            CE News
+            Comité Ejecutivo
           </Typography>
           <Typography component="h2" variant="subtitle1">
             Eventos Estudiantiles
@@ -139,7 +139,7 @@ const Admin = ({ loginHandler }) => {
               </Box>
             </Paper>
           </Grid>
-          
+
         </Grid>
       </div>
     </Container>

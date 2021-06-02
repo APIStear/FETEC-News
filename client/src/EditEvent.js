@@ -6,6 +6,8 @@ import { ToastContainer, toast} from 'react-toastify';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import './EventNew.css';
+import { isAdminUser } from './TokenUtilities';
+
 
 const initialState = {
   title: "",
@@ -16,7 +18,8 @@ const initialState = {
   location: "",
   isRSVP: false,
   RSVPlist: [],
-  studentGroup: ""
+  studentGroup: "",
+  canceled: false,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -29,8 +32,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function userRedirect(history) {
+  if (!isAdminUser()) {
+    history.push("/events");
+  }
+}
+
 const EditEvent = ({ history, location }) => {
   const classes = useStyles();
+
+  userRedirect(history);
 
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
@@ -47,7 +58,7 @@ const EditEvent = ({ history, location }) => {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
       .then(response => {
-      
+
         let event = response.data.event
         event.imgKeys = event.imgKeys.join(" ");
         let sDate = new Date(event.startDate);
@@ -56,7 +67,7 @@ const EditEvent = ({ history, location }) => {
         setStartDate(sDate);
         setEndDate(eDate);
 
-        document.title = `Editar ${response.data.event.title} | CE News`
+        document.title = `Editar ${response.data.event.title} | Comité Ejecutivo`
         console.log(event);
       }).catch(error => {
         console.log(error);

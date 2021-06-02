@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
-import {useHistory} from 'react-router-dom';
-// import ReactTooltip from 'react-tooltip';
-import "react-datepicker/dist/react-datepicker.css";
 
+import {useHistory} from 'react-router-dom';
+import "react-datepicker/dist/react-datepicker.css";
+import { isAdminUser } from './TokenUtilities';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,12 +21,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function EventNew() {
+function userRedirect(history) {
+  if (!isAdminUser()) {
+    history.push("/events");
+  }
+}
+
+const EventNew = ({ location }) => {
+  userRedirect(history);
   const classes = useStyles();
   const history = useHistory();
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
+
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
 
@@ -34,16 +42,13 @@ export default function EventNew() {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
     let description = document.getElementById("description").value;
-    // const [startDate, setStartDate] = useState(new Date());
-    // return (
-    //   <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-    // );
     let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
     let isRSVP = document.getElementById("isRSVP").checked;
     let fixed = _fix_img_urls(imgKeys);
+
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
     axios.post(`${url}/api/events/`, {
       title: title,
@@ -55,6 +60,7 @@ export default function EventNew() {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
+
       history.push(`/event?eventId=${response.data.event._id}`, "Evento registrado correctamente");
     }).catch(error => {
       let errors = error.response.data.message;
@@ -98,7 +104,7 @@ export default function EventNew() {
               {/* <TextField id="endDate" fullWidth label="Fecha fin"/> */}
             </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos" data-tip='Las urls deben ir separadas por espacios'/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos (separadas por espacios)"/>
               <TextField id="location" fullWidth label="Lugar"/>
             </div>
           </div>
@@ -118,3 +124,5 @@ export default function EventNew() {
     </Container>
   );
 }
+
+export default EventNew;

@@ -17,7 +17,8 @@ const initialState = {
   location: "",
   isRSVP: false,
   RSVPlist: [],
-  studentGroup: ""
+  studentGroup: "",
+  canceled: false
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -92,7 +93,7 @@ const EventView = ({ history, location }) => {
 
         setEvent(response.data.event)
         setCanceled(response.data.event.canceled);
-        document.title = `${response.data.event.title} | CE News`
+        document.title = `${response.data.event.title} | Comité Ejecutivo`
         const userId = getUserId()
         if(userId && !isAdminUser()) {
           return axios
@@ -148,8 +149,22 @@ const EventView = ({ history, location }) => {
     history.push("/events")
   }
 
+  const _edit = _ => {
+
+    history.push(`/edit-event?eventId=${eventId}`)
+  }
+
   const _cancel_event = _ => {
     axios.put(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`, {
+      title: event.title,
+      description: event.description,
+      startDate: event.startDate,
+      imgKeys: event.imgKeys,
+      endDate: event.endDate,
+      location: event.location,
+      isRSVP: event.isRSVP,
+      RSVPlist: event.RSVPlist,
+      studentGroup: event.studentGroup,
       canceled: !canceled
     }).then(response => {
       if (canceled) {
@@ -165,6 +180,10 @@ const EventView = ({ history, location }) => {
   }
 
   const _delete_event = _ => {
+    if (!window.confirm("¿Estás segurx de que quieres eliminar este evento?")) {
+      return;
+    }
+
     axios.delete(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
      .then(response => {
        toast.success("Evento eliminado correctamente")
@@ -172,6 +191,76 @@ const EventView = ({ history, location }) => {
      }).catch(error => {
        toast.error(error);
      });
+  }
+
+  const _cancel_button = _ => {
+    if (!isAdminUser()) {
+      return null;
+    } else if (canceled) {
+      return (
+        <div>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.coolButton}
+            onClick={_cancel_event}
+          >
+            Reagendar evento
+          </Button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <Button disableElevation
+          variant="contained"
+          color="secondary"
+          className={classes.warningButton}
+          onClick={_cancel_event}
+          style={{color: '#FFFFFF'}}
+          >
+            Cancelar evento
+          </Button>
+        </div>
+      )
+    }
+  }
+
+  const _delete_button = _ => {
+    if (isAdminUser()) {
+      return(
+       <div>
+         <Button disableElevation
+           style={{color: '#FFFFFF'}}
+           variant="contained"
+           color="secondary"
+           className={classes.warningButton}
+           onClick={_delete_event}
+         >
+           Eliminar evento
+         </Button>
+       </div>
+      )
+    }
+    return null;
+  }
+
+  const _edit_button = _ => {
+   if (isAdminUser()) {
+     return(
+      <div>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.linkText}
+          onClick={ _edit }
+        >
+          Editar evento
+        </Button>
+      </div>
+     )
+   }
+   return null;
   }
 
   return (
@@ -215,7 +304,7 @@ const EventView = ({ history, location }) => {
                 <hr style={{ "width": "70%" }}></hr>
                 <Typography component='h2' variant='h4'>
                   {event.studentGroup}
-                </Typography>               
+                </Typography>
                 <Typography component='h5' variant='h5' style={{color:"#3f3f3f"}}>
                   Inicio: {new Intl.DateTimeFormat("es-MX", {
                     year: "numeric",
@@ -257,6 +346,9 @@ const EventView = ({ history, location }) => {
                     :
                     ''
                 }
+                { _cancel_button() }
+                { _delete_button() }
+                { _edit_button() }
                 <Button
                   variant="outlined"
                   color="primary"
@@ -265,47 +357,6 @@ const EventView = ({ history, location }) => {
                 >
                   Volver a Eventos
                 </Button>
-
-                {
-                 // TODO: Esto nada más debe de salirle a un admin
-                }
-                {canceled?
-                    <div>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.coolButton}
-                        onClick={_cancel_event}
-                      >
-                        Reagendar evento
-                      </Button>
-                    </div>
-
-                    :
-                    <div>
-                      <Button disableElevation
-                        variant="contained"
-                        color="secondary"
-                        className={classes.warningButton}
-                        onClick={_cancel_event}
-                        style={{color: '#FFFFFF'}}
-                      >
-                        Cancelar evento
-                      </Button>
-                    </div>
-                }
-
-                <div>
-                  <Button disableElevation
-                    style={{color: '#FFFFFF'}}
-                    variant="contained"
-                    color="secondary"
-                    className={classes.warningButton}
-                    onClick={_delete_event}
-                  >
-                    Eliminar evento
-                  </Button>
-                </div>
             </Grid>
           </Box>
         </Grid>
