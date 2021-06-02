@@ -103,7 +103,7 @@ eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, 
       query.startDate.$gte = startDate
     }
     if (endDate) {
-      query.endDate.$gte = endDate
+      query.startDate.$lte = endDate
     }
   }
 
@@ -114,7 +114,7 @@ eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, 
       .limit(pageSize)
       .exec(),
     this.countDocuments(query),
-]);
+  ]);
 
 
   return {events, total, totalPages: Math.ceil(total/pageSize)};

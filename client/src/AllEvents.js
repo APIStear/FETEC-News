@@ -40,7 +40,7 @@ const AllEvents = ({ history, location }) => {
           toast.error(error.response.data.message)
         } else {
           toast.error("Hubo un error");
-        }  
+        }
       })
   }
 
