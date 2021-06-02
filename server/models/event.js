@@ -87,7 +87,7 @@ eventSchema.statics.deleteEvent = async function(eventId){
   return event;
 }
 
-eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, title) {
+eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, title, sort) {
   const query = {bActive: true};
 
   if(title && title.length > 0){
@@ -106,6 +106,7 @@ eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, 
 
   const [events, total] = await Promise.all([
     this.find(query)
+      .sort(sort)
       .skip(page*pageSize)
       .limit(pageSize)
       .exec(),
@@ -167,6 +168,17 @@ eventSchema.statics.reserveEvent = async function(eventId, userId) {
 
   await Promise.all([user.save(), event.save()])
   return true;
+}
+
+eventSchema.statics.getRSVPED = async function(eventId) {
+  const event = await this.findOne({
+    _id: eventId,
+    bActive:true,
+  }).select('RSVPlist').populate('RSVPlist').exec();
+  if(!event) {
+    return Promise.reject(new MyError(404, "No se encontró el evento."));
+  }
+  return event.RSVPlist
 }
 
 module.exports = mongoose.model('Event', eventSchema);
