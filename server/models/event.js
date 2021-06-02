@@ -101,9 +101,9 @@ eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, 
 
   const [events, total] = await Promise.all([
     this.find(query)
+      .sort(sort)
       .skip(page*pageSize)
       .limit(pageSize)
-      .sort(sort)
       .exec(),
     this.countDocuments(query),
 ]);

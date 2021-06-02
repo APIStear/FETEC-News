@@ -14,7 +14,7 @@ const AllEvents = ({ history, location }) => {
   const [eventList, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get(`${url}/api/events/`)
+    axios.get(`${url}/api/events?sort=startDate`)
       .then(response => {
         const events = response.data.events 
         setEvents(events);
@@ -31,7 +31,7 @@ const AllEvents = ({ history, location }) => {
     if(value !== '') {
       value = `?title=${value}`
     }
-    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}`)
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}&sort=startDate`)
       .then(response => {
         setEvents(response.data.events);
       })
