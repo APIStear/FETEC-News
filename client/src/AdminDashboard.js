@@ -37,7 +37,7 @@ const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/`)
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events?sort=startDate`)
       .then(response => {
         setEvents(response.data.events);
       }).catch(error => {
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
     if(value !== '') {
       value = `?title=${value}`
     }
-    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}`)
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}&sort=startDate`)
       .then(response => {
         setEvents(response.data.events);
       })

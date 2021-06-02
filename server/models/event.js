@@ -87,7 +87,7 @@ eventSchema.statics.deleteEvent = async function(eventId){
   return event;
 }
 
-eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, title) {
+eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, title, sort) {
   const query = {bActive: true};
 
   if(title && title.length > 0){
@@ -106,6 +106,7 @@ eventSchema.statics.getAll = async function(page, pageSize, startDate, endDate, 
 
   const [events, total] = await Promise.all([
     this.find(query)
+      .sort(sort)
       .skip(page*pageSize)
       .limit(pageSize)
       .exec(),
