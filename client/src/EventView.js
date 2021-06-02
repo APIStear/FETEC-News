@@ -46,20 +46,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
     padding: [[theme.spacing(1), theme.spacing(3)]],
     //'font-weight': 'bold'
-    display: 'block'
+    display: 'block',
+    width: '40%'
   },
   warningButton: {
     backgroundColor: "#FF0000",
     marginTop: theme.spacing(4),
     padding: [[theme.spacing(1), theme.spacing(3)]],
-    display: 'block'
+    display: 'block',
+    width: '40%'
   },
 
   coolButton: {
     backgroundColor: "#00FF00",
     marginTop: theme.spacing(4),
     padding: [[theme.spacing(1), theme.spacing(3)]],
-    display: 'block'
+    display: 'block',
+    width: '40%'
   },
 
   canceled: {
@@ -200,6 +203,7 @@ const EventView = ({ history, location }) => {
       return (
         <div>
           <Button
+            fullWidth
             variant="contained"
             color="secondary"
             className={classes.coolButton}
@@ -230,15 +234,15 @@ const EventView = ({ history, location }) => {
     if (isAdminUser()) {
       return(
        <div>
-         <Button disableElevation
-           style={{color: '#FFFFFF'}}
-           variant="contained"
-           color="secondary"
-           className={classes.warningButton}
-           onClick={_delete_event}
-         >
-           Eliminar evento
-         </Button>
+        <Button disableElevation
+            style={{color: '#FFFFFF'}}
+            variant="contained"
+            color="secondary"
+            className={classes.warningButton}
+            onClick={_delete_event}
+        >
+          Eliminar evento
+        </Button>
        </div>
       )
     }

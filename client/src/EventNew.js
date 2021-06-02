@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Button, Container, Grid, TextField, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
-
 import {useHistory} from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 import { isAdminUser } from './TokenUtilities';
@@ -23,21 +22,23 @@ const useStyles = makeStyles((theme) => ({
 
 function userRedirect(history) {
   if (!isAdminUser()) {
-    history.push("/events");
-  }
+  history.push("/events", {error: "No tienes permiso para hacer eso."});
+}
 }
 
 const EventNew = ({ location }) => {
-  userRedirect(history);
-  const classes = useStyles();
   const history = useHistory();
+  const classes = useStyles();
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
-
+  
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-
+  
+  useEffect(() => {
+    userRedirect(history);
+  }, [])
   const _createEvent = _ => {
     let title = document.getElementById("title").value;
     let studentGroup = document.getElementById("studentGroup").value;
@@ -48,7 +49,7 @@ const EventNew = ({ location }) => {
     let location = document.getElementById("location").value;
     let isRSVP = document.getElementById("isRSVP").checked;
     let fixed = _fix_img_urls(imgKeys);
-
+    
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
     axios.post(`${url}/api/events/`, {
       title: title,
@@ -60,14 +61,14 @@ const EventNew = ({ location }) => {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-
+      
       history.push(`/event?eventId=${response.data.event._id}`, "Evento registrado correctamente");
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
     });
   }
-
+  
   return(
     <Container component="main" class="main" maxWidth="s">
       <div className={classes.spacing}>

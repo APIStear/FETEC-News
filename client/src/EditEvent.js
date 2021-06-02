@@ -34,14 +34,12 @@ const useStyles = makeStyles((theme) => ({
 
 function userRedirect(history) {
   if (!isAdminUser()) {
-    history.push("/events");
+    history.push("/events", {error: "No tienes permiso para hacer eso."});
   }
 }
 
 const EditEvent = ({ history, location }) => {
   const classes = useStyles();
-
-  userRedirect(history);
 
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
@@ -56,6 +54,8 @@ const EditEvent = ({ history, location }) => {
   let { eventId } = parsed;
 
   useEffect(() => {
+    userRedirect(history);
+
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
       .then(response => {
 
@@ -68,9 +68,12 @@ const EditEvent = ({ history, location }) => {
         setEndDate(eDate);
 
         document.title = `Editar ${response.data.event.title} | Comité Ejecutivo`
-        console.log(event);
       }).catch(error => {
-        console.log(error);
+        if (error.response) {
+          history.push("/", {error: error.response.data.message})
+        } else {
+          history.push('/', {error:"Hubo un error"});
+        }
       });
   }, [eventId, history, location]);
 
@@ -147,7 +150,7 @@ const EditEvent = ({ history, location }) => {
             id="isRSVP"
             label="Employed"
             checked={event.isRSVP}
-            onChange={e => setEvent({...event, isRSVP: e.target.value })}
+            onChange={e => setEvent({...event, isRSVP: e.target.checked })}
             // defaultChecked={`${event.isRSVP}`}
           />
           <p>Hacer RSVP</p>
