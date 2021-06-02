@@ -13,7 +13,7 @@ const initialState = {
   title: "",
   description: "",
   startDate: new Date(),
-  imgKeys: [],
+  imgKeys: "",
   endDate: new Date(),
   location: "",
   isRSVP: false,
@@ -56,20 +56,22 @@ const EditEvent = ({ history, location }) => {
   let { eventId } = parsed;
 
   useEffect(() => {
-   axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
-     .then(response => {
-       let event = response.data.event
-       let sDate = new Date(event.startDate);
-       let eDate = new Date(event.startDate);
-       setEvent(event);
-       setStartDate(sDate);
-       setEndDate(eDate);
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
+      .then(response => {
 
-       document.title = `Editar ${response.data.event.title} | Comité Ejecutivo`
-       console.log(event);
-     }).catch(error => {
-       console.log(error);
-     });
+        let event = response.data.event
+        event.imgKeys = event.imgKeys.join(" ");
+        let sDate = new Date(event.startDate);
+        let eDate = new Date(event.startDate);
+        setEvent(event);
+        setStartDate(sDate);
+        setEndDate(eDate);
+
+        document.title = `Editar ${response.data.event.title} | Comité Ejecutivo`
+        console.log(event);
+      }).catch(error => {
+        console.log(error);
+      });
   }, [eventId, history, location]);
 
   const _editEvent = _ => {
@@ -81,9 +83,7 @@ const EditEvent = ({ history, location }) => {
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
     let isRSVP = document.getElementById("isRSVP").checked;
-
-    console.log(_fix_img_urls(imgKeys))
-
+    let fixed = _fix_img_urls(imgKeys)
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
     axios.put(`${url}/api/events/${eventId}`, {
       title: title,
@@ -91,7 +91,7 @@ const EditEvent = ({ history, location }) => {
       description: description,
       startDate: startDate,
       endDate: endDate,
-      imgKeys: _fix_img_urls(imgKeys),
+      imgKeys: fixed,
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
@@ -136,7 +136,7 @@ const EditEvent = ({ history, location }) => {
                 />
               </div> </div>
             <div className="EventNew-row">
-              <TextField id="imgKeys" fullWidth label="URL de fotos (separadas por espacios)" name="imgKeys" value={event.imgKeys.join(" ")} onChange={e => setEvent({...event, imgKeys: _fix_img_urls(e.target.value)})}/>
+              <TextField id="imgKeys" fullWidth label="URL de fotos" name="imgKeys" value={event.imgKeys} onChange={e => setEvent({...event, imgKeys: e.target.value})}/>
               <TextField id="location" fullWidth label="Lugar" name="location" value={event.location} onChange={e => setEvent({...event, location: e.target.value})} />
             </div>
           </div>

@@ -1,20 +1,24 @@
 import { Button, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { isAdminUser } from "./TokenUtilities";
+import Icon from '@material-ui/core/Icon';
+import { useState } from "react";
+import RSVPtable from "./RSVPtable";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   linkText: {
+    margin: theme.spacing(1,0),
     textDecoration: `none`,
     color: `white`
-  }
-})
+  },
+}))
 
-const EventList = ({events}) => {
+const EventList = ({events, toast}) => {
   const classes = useStyles();
-
   const _get_buttons = (event) => {
     if (window.location.href.includes("/dashboard")) {
       return (
-       <Button fullWidth
+       <Button
          variant="contained"
          color="primary"
          component={Link}
@@ -28,6 +32,9 @@ const EventList = ({events}) => {
     }
   }
 
+
+  const [expanded, setExpanded] = useState(events.map(() => false))
+
   return (
     <div>
 
@@ -39,7 +46,7 @@ const EventList = ({events}) => {
       <div className="EventsContainer">
 
         {
-          events.map((event) => {
+          events.map((event, i) => {
             event.startDate = new Date(event.startDate)
             return (
               <div key={event._id}>
@@ -64,18 +71,47 @@ const EventList = ({events}) => {
                     <div className="EventDetails"> {event.location} </div>
                   </div>
                   <div className="EventDetails">
-                    {_get_buttons(event)}
                     <Button fullWidth style={{marginTop: "5px"}}
-                    variant="outlined"
-                    color="primary"
-                    component={Link}
-                    to={`/event?eventId=${event._id}`}
-                    disableElevation
+                     variant="outlined"
+                      color="primary"
+                      component={Link}
+                      to={`/event?eventId=${event._id}`}
+                      disableElevation
                     >
-                    Ver más
+                      Ver más
                     </Button>
+                    {
+                      isAdminUser() ?
+                      <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.linkText}
+                          onClick={() => {
+                            let allExpanded = [...expanded];
+                            let thisExpanded = expanded[i];
+                            thisExpanded = !thisExpanded;
+                            allExpanded[i] = thisExpanded;
+                            setExpanded(allExpanded)
+                          }}
+                          endIcon={expanded[i]? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
+                      >
+                        {expanded[i]? 'Cerrar' : 'Ver RSVPed'}
+                      </Button>
+
+                      :
+                      ''
+                    }
+
                   </div>
                 </div>
+                {
+                  isAdminUser() && expanded[i] ?
+                    <RSVPtable eventId={event._id} toast={toast} />
+                  :
+                  ''
+                }
+
                 <hr></hr>
               </div>
             )
