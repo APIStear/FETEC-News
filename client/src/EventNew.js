@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
+import {useHistory} from 'react-router-dom';
 // import ReactTooltip from 'react-tooltip';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EventNew() {
   const classes = useStyles();
-
+  const history = useHistory();
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
@@ -42,22 +43,19 @@ export default function EventNew() {
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
     let isRSVP = document.getElementById("isRSVP").checked;
-
+    let fixed = _fix_img_urls(imgKeys);
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
-
     axios.post(`${url}/api/events/`, {
       title: title,
       studentGroup: studentGroup,
       description: description,
       startDate: startDate,
       endDate: endDate,
-      imgKeys: _fix_img_urls(imgKeys),
+      imgKeys: fixed,
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-      // TODO: Redireccionar a todos los eventos
-      toast.success("Evento registrado correctamente");
-      window.location.replace(`${url}/events`);
+      history.push(`/event?eventId=${response.data.event._id}`, "Evento registrado correctamente");
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
