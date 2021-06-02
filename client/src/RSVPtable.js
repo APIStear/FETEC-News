@@ -9,7 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import {getToken} from './TokenUtilities';
-import { useHistory } from 'react-router';
 
 const useStyles = makeStyles({
   table: {
@@ -20,7 +19,6 @@ const useStyles = makeStyles({
 const RSVPtable = ({ eventId, toast }) => {
   const classes = useStyles();
   const [users, setUsers] = useState([]);
-  const history = useHistory();
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users`, {
@@ -36,7 +34,7 @@ const RSVPtable = ({ eventId, toast }) => {
         toast.error("Hubo un error");
       }
     })
-  }, [])
+  }, [eventId, toast])
   
   return (
     <TableContainer component={Paper}>

@@ -43,7 +43,7 @@ const Home = () => {
       })
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     document.title = 'Comité Ejecutivo'
     if(location && location.state && location.state.error !== "") {
       if(location.state.error !== "") {
@@ -55,8 +55,8 @@ const Home = () => {
     }
 
 
-    await getNextEvents();
-    await getPastEvents();
+    getNextEvents();
+    getPastEvents();
   }, [location])
 
   return (

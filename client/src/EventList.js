@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: `none`,
     color: `white`
   },
+  linkTextFirst: {
+    margin: theme.spacing(1,0),
+    textDecoration: `none`,
+  },
 }))
 
 const EventList = ({events, toast}) => {
@@ -18,16 +22,17 @@ const EventList = ({events, toast}) => {
   const _get_buttons = (event) => {
     if (window.location.href.includes("/dashboard")) {
       return (
-       <Button
-         variant="contained"
-         color="primary"
-         component={Link}
-         to={`/edit-event?eventId=${event._id}`}
-         disableElevation
-         className={`${classes.linkText} ${classes.buttonMargin}`}
-       >
-       Editar
-       </Button>
+        <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            component={Link}
+            to={`/edit-event?eventId=${event._id}`}
+            disableElevation
+            className={`${classes.linkText}`}
+        >
+          Editar
+        </Button>
       )
     }
   }
@@ -75,15 +80,23 @@ const EventList = ({events, toast}) => {
                      variant="outlined"
                       color="primary"
                       component={Link}
+                      className={classes.linkTextFirst}
                       to={`/event?eventId=${event._id}`}
                       disableElevation
+                      
                     >
                       Ver más
                     </Button>
                     {
                       isAdminUser() ?
+                        _get_buttons(event)
+                      : ''
+                    }
+                    {
+                      isAdminUser() && event.isRSVP ?
                       <Button
                           fullWidth
+                          disableElevation
                           variant="contained"
                           color="primary"
                           className={classes.linkText}
@@ -98,7 +111,6 @@ const EventList = ({events, toast}) => {
                       >
                         {expanded[i]? 'Cerrar' : 'Ver RSVPed'}
                       </Button>
-
                       :
                       ''
                     }
@@ -106,7 +118,7 @@ const EventList = ({events, toast}) => {
                   </div>
                 </div>
                 {
-                  isAdminUser() && expanded[i] ?
+                  isAdminUser() && expanded[i] && event.isRSVP ?
                     <RSVPtable eventId={event._id} toast={toast} />
                   :
                   ''
