@@ -117,7 +117,6 @@ eventSchema.statics.getOne = async function(eventId){
     _id: eventId,
     bActive: true,
   }).exec();
-  console.log('event :>> ', event);
   if(!event) {
     return Promise.reject(new MyError(404, "No se encontró el evento."))
   }
