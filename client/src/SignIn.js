@@ -69,9 +69,7 @@ export default function SignIn({loginHandler}) {
         return {respError: null, firstLogin: response.data.firstLogin, user: response.data.user}
       })
       .catch(error => {
-        console.log('error :>> ', error);
         if(error.response) {
-          console.log('error.response :>> ', error.response);
           return {respError: error.response.data.message};
         } else return {respError: error.message};
       })
