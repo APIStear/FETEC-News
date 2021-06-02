@@ -67,7 +67,7 @@ const Home = () => {
           autoClose={4000}
       />
       <Banner
-          data={{ title: "Comité Electoral", paragraph: "Eventos Estudiantiles" }}
+          data={{ title: "Comité Ejecutivo", paragraph: "Eventos Estudiantiles" }}
       />
       <SpecialEvents data={nextEvents} />
       <Gallery data={pastEvents} />
