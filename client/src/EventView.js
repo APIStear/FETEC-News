@@ -149,6 +149,11 @@ const EventView = ({ history, location }) => {
     history.push("/events")
   }
 
+  const _edit = _ => {
+
+    history.push(`/edit-event?eventId=${eventId}`)
+  }
+
   const _cancel_event = _ => {
     axios.put(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`, {
       title: event.title,
@@ -236,9 +241,26 @@ const EventView = ({ history, location }) => {
          </Button>
        </div>
       )
-      console.log("AAAAAAAAAAAa");
     }
     return null;
+  }
+
+  const _edit_button = _ => {
+   if (isAdminUser()) {
+     return(
+      <div>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.linkText}
+          onClick={ _edit }
+        >
+          Editar evento
+        </Button>
+      </div>
+     )
+   }
+   return null;
   }
 
   return (
@@ -326,6 +348,7 @@ const EventView = ({ history, location }) => {
                 }
                 { _cancel_button() }
                 { _delete_button() }
+                { _edit_button() }
                 <Button
                   variant="outlined"
                   color="primary"

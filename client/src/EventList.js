@@ -71,7 +71,6 @@ const EventList = ({events}) => {
                     component={Link}
                     to={`/event?eventId=${event._id}`}
                     disableElevation
-                    // className={classes.linkText}
                     >
                     Ver más
                     </Button>
