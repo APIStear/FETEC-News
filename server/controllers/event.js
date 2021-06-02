@@ -10,6 +10,7 @@ ctr.create = () => async (req, res, next) => {
     location,
     isRSVP,
     canceled,
+    imgKeys,
   } = req.body;
 
   const event = new Event({
@@ -20,6 +21,7 @@ ctr.create = () => async (req, res, next) => {
     location,
     isRSVP,
     canceled,
+    imgKeys,
   });
 
   await event.save();

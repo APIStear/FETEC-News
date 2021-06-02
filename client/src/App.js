@@ -33,8 +33,8 @@ function App() {
           <Route path='/new-event' component={EventNew}/>
           <Route path='/events' component={AllEvents}/>
           <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
-          <Route path='/*' component={Home} />
           <PrivateRoute path='/dashboard' component={Dashboard}/>
+          <Route path='/*' component={Home} />
         </Switch>
       </Router>
       <PageFooter />
