@@ -1,16 +1,21 @@
 import { Button, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { isAdminUser } from "./TokenUtilities";
+import Icon from '@material-ui/core/Icon';
+import { useState } from "react";
+import RSVPtable from "./RSVPtable";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   linkText: {
+    margin: theme.spacing(1,2),
     textDecoration: `none`,
     color: `white`
   },
-})
+}))
 
-const EventList = ({events}) => {
+const EventList = ({events, toast}) => {
   const classes = useStyles();
-
+  const [expanded, setExpanded] = useState(events.map(() => false)) 
   return (
     <div>
 
@@ -22,7 +27,7 @@ const EventList = ({events}) => {
       <div className="EventsContainer">
         
         {
-          events.map((event) => {
+          events.map((event, i) => {
             event.startDate = new Date(event.startDate)
             return (
               <div key={event._id}>
@@ -57,8 +62,37 @@ const EventList = ({events}) => {
                     >
                       Ver más
                     </Button>
+                    {
+                      isAdminUser() ?
+                      <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.linkText}
+                          onClick={() => {
+                            let allExpanded = [...expanded];
+                            let thisExpanded = expanded[i];
+                            thisExpanded = !thisExpanded;
+                            allExpanded[i] = thisExpanded;
+                            setExpanded(allExpanded)
+                          }}
+                          endIcon={expanded[i]? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
+                      >
+                        {expanded[i]? 'Cerrar lista' : 'Ver RSVPed'}
+                      </Button>
+                      
+                      : 
+                      ''
+                    }
+
                   </div>
                 </div>
+                {
+                  isAdminUser() && expanded[i] ?
+                    <RSVPtable eventId={event._id} toast={toast} />
+                  :
+                  ''
+                }
+
                 <hr></hr>
               </div>
             )

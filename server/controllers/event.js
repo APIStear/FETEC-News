@@ -112,4 +112,9 @@ ctr.rsvp = () => async (req, res, next) => {
   return res.status(200).json({RSVPed});
 }
 
+ctr.getAllRSVPED = () => async (req, res, next) => {
+  const {eventId} = req.params;
+  const users = await Event.getRSVPED(eventId);
+  return res.status(200).json({users});
+}
 module.exports = ctr;

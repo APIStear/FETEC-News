@@ -91,7 +91,7 @@ const AdminDashboard = () => {
       </div>
       <Searchbar onChange={_search}/>
       <div className="EventsMain">
-        <EventList events={events}/>
+        <EventList events={events} toast={toast}/>
       </div>
     </Container>
   );

@@ -53,7 +53,7 @@ const AllEvents = ({ history, location }) => {
       />
       <h1>Próximos Eventos</h1>
       <Searchbar onChange={_search}/>
-      <EventList events={eventList}/>
+      <EventList events={eventList} toast={toast}/>
     </div>
   );
 }
