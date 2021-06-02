@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom"
 
+const galleryImg = {
+  minHeight: "300px",
+  objectFit: "cover"
+};
+
 const Gallery = (props) => {
   return (
     <div id='portfolio' className='text-center'>
@@ -30,6 +35,7 @@ const Gallery = (props) => {
                           <img
                             src={event.imgKeys && event.imgKeys.length > 0 ? event.imgKeys[0] : 'img/portfolio/01-small.jpg'}
                             className='img-responsive'
+                            style={galleryImg}
                             alt={event.title}
                           />{' '}
                         </Link>{' '}
