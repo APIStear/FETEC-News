@@ -34,6 +34,7 @@ ctr.edit = () => async (req, res, next) => {
     description,
     startDate,
     endDate,
+    imgKeys,
     location,
     isRSVP,
     canceled,
@@ -47,6 +48,7 @@ ctr.edit = () => async (req, res, next) => {
     endDate,
     location,
     isRSVP,
+    imgKeys,
     canceled,
   );
 

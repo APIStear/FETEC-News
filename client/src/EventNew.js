@@ -37,7 +37,7 @@ export default function EventNew() {
     // return (
     //   <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
     // );
-    // let startDate = document.getElementById("startDate").value;
+    let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
@@ -56,7 +56,8 @@ export default function EventNew() {
       isRSVP: isRSVP
     }).then((response) => {
       // TODO: Redireccionar a todos los eventos
-      toast.success("Evento registrado correctamente")
+      toast.success("Evento registrado correctamente");
+      window.location.replace(`${url}/events`);
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);

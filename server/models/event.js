@@ -53,7 +53,9 @@ const eventSchema = new mongoose.Schema({
 
 // DO NOT USE ARROW FUNCTIONS HERE
 // using arrow function (() => {}) does not allow the use of 'this'
-eventSchema.statics.updateEvent = async function(eventId, title, description, startDate, endDate, location, isRSVP, canceled) {
+
+eventSchema.statics.updateEvent = async function(eventId, title, description, startDate, endDate, location, isRSVP, imgKeys, canceled) {
+
   const event = await this.findOneAndUpdate(
     {_id: eventId, bActive: true},
     {
@@ -63,6 +65,7 @@ eventSchema.statics.updateEvent = async function(eventId, title, description, st
       endDate,
       location,
       isRSVP,
+      imgKeys,
       canceled,
     },
     {new: true}
