@@ -20,6 +20,18 @@ mw.isLoggedIn = async (req, res, next) => {
   }
 };
 
+mw.isAdmin = async (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) {
+    return Promise.reject(new MyError(401, 'Debes iniciar sesión para ahacer eso.'));
+  }
+  const data = await jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
+  if (data.admin === process.env.ADMIN_PW) {
+    next();
+  } else return Promise.reject( new MyError(403,
+    'No tienes permiso de hacer eso.')); 
+}
+
 // TODO: Add admin validation
 mw.isOwnerOrAdmin = async (req, res, next) =>{
   const token = req.headers['authorization'];

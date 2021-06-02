@@ -11,8 +11,8 @@ import EventNew from './EventNew';
 import AllEvents from './AllEvents';
 import Admin from './Admin';
 import Home from './Home';
-
-
+import PrivateRoute from './PrivateRoute';
+import Dashboard from './Dashboard';
 
 
 function App() {
@@ -32,6 +32,7 @@ function App() {
           <Route path='/events' component={AllEvents}/>
           <Route path='/admin' render={(props) =>(<Admin {... props} loginHandler={setLoggedIn} />)}/>
           <Route path='/*' component={Home} />
+          <PrivateRoute path='/dashboard' component={Dashboard}/>
         </Switch>
       </Router>
       <PageFooter />
