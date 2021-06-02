@@ -9,7 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { isAdminUser } from './TokenUtilities';
 
 
-
 const useStyles = makeStyles((theme) => ({
   spacingBottom: {
     marginBottom: theme.spacing(4),
@@ -31,10 +30,9 @@ const EventNew = ({ history, location }) => {
   const classes = useStyles();
 
   const _fix_img_urls = (imgKeys) => {
-    console.log(imgKeys);
-    console.log(imgKeys.split(" ").filter(e => e !== ""));
     return imgKeys.split(" ").filter(e => e !== "");
   }
+
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
 
@@ -47,11 +45,9 @@ const EventNew = ({ history, location }) => {
     let imgKeys = document.getElementById("imgKeys").value;
     let location = document.getElementById("location").value;
     let isRSVP = document.getElementById("isRSVP").checked;
+    let fixed = _fix_img_urls(imgKeys);
 
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
-
-    console.log(imgKeys);
-    console.log(_fix_img_urls(imgKeys));
 
     axios.post(`${url}/api/events/`, {
       title: title,
@@ -59,13 +55,14 @@ const EventNew = ({ history, location }) => {
       description: description,
       startDate: startDate,
       endDate: endDate,
-      imgKeys: _fix_img_urls(imgKeys),
+      imgKeys: fixed,
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
+      console.log(fixed);
       // TODO: Redireccionar a todos los eventos
       toast.success("Evento registrado correctamente");
-      history.push("/events");
+      // history.push("/events");
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
