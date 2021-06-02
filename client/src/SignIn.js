@@ -83,7 +83,7 @@ export default function SignIn({loginHandler}) {
   }
 
   useEffect(() => {
-    document.title= 'Login | CE News'
+    document.title= 'Login | Comité Ejecutivo'
     if(location && location.state && location.state.error !== "") {
       toast.error(location.state.error)
     }
@@ -106,7 +106,7 @@ export default function SignIn({loginHandler}) {
         <Grid container >
           <Grid item md={6} className={classes.title}>
           <Typography component="h1" variant="h2">
-            CE News
+            Comité Ejecutivo
           </Typography>
           <Typography component="h2" variant="subtitle1">
             Eventos Estudiantiles

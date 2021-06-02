@@ -64,7 +64,7 @@ const EditEvent = ({ history, location }) => {
        setStartDate(sDate);
        setEndDate(eDate);
 
-       document.title = `Editar ${response.data.event.title} | CE News`
+       document.title = `Editar ${response.data.event.title} | Comité Ejecutivo`
        console.log(event);
      }).catch(error => {
        console.log(error);
