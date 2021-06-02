@@ -7,6 +7,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Nombre es requerido"],
   },
+  profilePicture: {
+    type: String,
+  },
   studentId:{
     type: String,
     required: [true, "Matrícula es requerida"],
@@ -19,23 +22,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Correo es requerido"],
   },
-  imgKey: {
-    type: [String]
-  },
   gender: {
-    type: String
+    type: String,
+    enum: ['Masculino', 'Femenino', 'Otro', ''],
+    default: ''
   },
   careerProgram: {
     type: String,
+    default: ''
   },
   semester: {
     type: Number,
-  },
-  isTec21: {
-    type: Boolean,
+    default: 1
   },
   schoolProgram: {
-    type: String
+    type: String,
+    default: ''
   },
   numRSVPs: {
     type: Number,

@@ -2,8 +2,10 @@ import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import './AllEvents.css';
-import { Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import Searchbar from './Searchbar';
+import EventList from './EventList';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // TODO: Esto solo puede ser accesado como admin
 const AllEvents = ({ history, location }) => {
@@ -12,66 +14,46 @@ const AllEvents = ({ history, location }) => {
   const [eventList, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get(`${url}/api/events/`)
+    axios.get(`${url}/api/events?sort=startDate`)
       .then(response => {
-        let events = response.data.events
-        let allEvents = events.map((event) => {
-          event.startDate = new Date(event.startDate)
-          return (
-          <div key={event.title}>
-            <div className="EventCard">
-              <div className="EventDate">
-                <div className="EventDateDay">
-                  {new Intl.DateTimeFormat("es-MX", {
-                    day: "numeric",
-                  }).format(event.startDate)}
-                </div>
-                <div>
-                  {new Intl.DateTimeFormat("es-MX", {
-                    month: "long",
-                  }).format(event.startDate).toLocaleUpperCase()}
-                </div>
-              </div>
-              <div className="EventTitleOrg">
-                <div className="EventTitle"> {event.title} </div>
-                <div className="EventDetails"> {event.studentGroup} </div>
-              </div>
-              <div className="EventLocation">
-                <div className="EventDetails"> {event.location} </div>
-              </div>
-              <div className="EventDetails">
-              <Button
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={`/event?eventId=${event._id}`}
-                disableElevation
-              >
-                Ver más
-              </Button>
-              </div>
-            </div>
-            <hr></hr>
-          </div>
-      )})
-        setEvents(allEvents)
+        const events = response.data.events
+        setEvents(events);
       }).catch(error => {
-        history.push('/', {error:"Hubo un error"});
-        console.log(error);
+        if (error.response) {
+          toast.error(error.response.data.message)
+        } else {
+          toast.error("Hubo un error");
+        }
       });
-  }, [eventList, history, location, url]);
+  }, [history, location, url]);
+
+  const _search = value => {
+    if(value !== '') {
+      value = `?title=${value}`
+    }
+    axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events${value}&sort=startDate`)
+      .then(response => {
+        setEvents(response.data.events);
+      })
+      .catch(error => {
+        if (error.response) {
+          toast.error(error.response.data.message)
+        } else {
+          toast.error("Hubo un error");
+        }
+      })
+  }
 
   return (
     <div className="EventsMain" >
+      <ToastContainer
+          position="top-right"
+          draggable={false}
+          autoClose={4000}
+      />
       <h1>Próximos Eventos</h1>
-      <div className="columnHeaders" >
-        <h2 className="EventDate">Fecha</h2>
-        <h2 className="EventTitleOrg">Evento</h2>
-        <h2 className="EventLocation">Lugar</h2>
-      </div>
-      <div className="EventsContainer">
-          {eventList}
-      </div>
+      <Searchbar onChange={_search}/>
+      <EventList events={eventList} toast={toast}/>
     </div>
   );
 }

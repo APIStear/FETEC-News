@@ -64,7 +64,7 @@ export default function EventNew() {
   }
 
   return(
-    <Container component="main" maxWidth="lg">
+    <Container component="main" class="main" maxWidth="s">
       <div className={classes.spacing}>
         <h1 className="EventNew-header">Nuevo Evento</h1>
         <ToastContainer
@@ -112,7 +112,7 @@ export default function EventNew() {
           />
           <p>Hacer RSVP</p>
         </Grid>
-        <Button variant="contained" color="primary" className={classes.spacingTop} onClick={_createEvent} style={{color: '#FFFFFF'}}>
+        <Button variant="contained" color="primary" className={classes.spacingTop} onClick={_createEvent} disableElevation style={{color: '#FFFFFF'}}>
           Crear evento
         </Button>
       </div>

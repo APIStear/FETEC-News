@@ -4,7 +4,7 @@ import {Box, Button, Container, Grid, Typography} from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import Image from 'material-ui-image'
-import { getUserId, getToken, deleteUserId, deleteToken } from './TokenUtilities';
+import { getUserId, getToken, deleteUserId, deleteToken, isAdminUser } from './TokenUtilities';
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -46,11 +46,29 @@ const useStyles = makeStyles((theme) => ({
     padding: [[theme.spacing(1), theme.spacing(3)]],
     //'font-weight': 'bold'
     display: 'block'
+  },
+  warningButton: {
+    backgroundColor: "#FF0000",
+    marginTop: theme.spacing(4),
+    padding: [[theme.spacing(1), theme.spacing(3)]],
+    display: 'block'
+  },
+
+  coolButton: {
+    backgroundColor: "#00FF00",
+    marginTop: theme.spacing(4),
+    padding: [[theme.spacing(1), theme.spacing(3)]],
+    display: 'block'
+  },
+
+  canceled: {
+    color: "#FF0000"
   }
 }));
 const EventView = ({ history, location }) => {
   const [event, setEvent] = useState(initialState);
   const [RSVPed, setRSVPed] = useState(false);
+  const [canceled, setCanceled] = useState(false);
   const classes = useStyles();
 
   const queryString = require("query-string");
@@ -68,31 +86,32 @@ const EventView = ({ history, location }) => {
     }
     axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
       .then(response => {
-      
+
         response.data.event.startDate = new Date(response.data.event.startDate)
         response.data.event.endDate = new Date(response.data.event.endDate)
 
         setEvent(response.data.event)
+        setCanceled(response.data.event.canceled);
         document.title = `${response.data.event.title} | CE News`
         const userId = getUserId()
-        if(userId) {
+        if(userId && !isAdminUser()) {
           return axios
             .get(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${userId}`,
             {
-              headers: { Authorization: `Bearer ${getToken()}` } 
+              headers: { Authorization: `Bearer ${getToken()}` }
             })
         } else return {data: {RSVPed: false}}
       })
       .then(response => {
         setRSVPed(response.data.RSVPed)
-        
+
       })
       .catch(error => {
         if (error.response) {
           history.push("/", {error: error.response.data.message})
         } else {
           history.push('/', {error:"Hubo un error"});
-        }      
+        }
       })
 
   }, [eventId, history, location])
@@ -101,9 +120,9 @@ const EventView = ({ history, location }) => {
     if(!getUserId()) {
       return history.push("/login", {from: location, error: 'Debes iniciar sesión para hacer eso.'});
     }
-    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {}, 
+    return axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}/users/${getUserId()}`, {},
     {
-      headers: { Authorization: `Bearer ${getToken()}` } 
+      headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then(response => {
       setRSVPed(response.data.RSVPed);
@@ -121,7 +140,7 @@ const EventView = ({ history, location }) => {
         }
       } else {
         toast.error("Hubo un error")
-      }   
+      }
     })
   }
 
@@ -129,16 +148,42 @@ const EventView = ({ history, location }) => {
     history.push("/events")
   }
 
+  const _cancel_event = _ => {
+    axios.put(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`, {
+      canceled: !canceled
+    }).then(response => {
+      if (canceled) {
+       toast.success("Evento reagendado nuevamente");
+      } else {
+       toast.success("Evento cancelado correctamente");
+      }
+      setCanceled(!canceled);
+    }).catch(error => {
+      let errors = error.response.data.message;
+      toast.error(errors);
+    });
+  }
+
+  const _delete_event = _ => {
+    axios.delete(`${process.env.REACT_APP_API_DOMAIN}/api/events/${eventId}`)
+     .then(response => {
+       toast.success("Evento eliminado correctamente")
+       history.push("/events")
+     }).catch(error => {
+       toast.error(error);
+     });
+  }
+
   return (
     <Container component="main" maxWidth="lg">
-      <ToastContainer 
+      <ToastContainer
           position="top-right"
           draggable={false}
           autoClose={4000}
 
       />
       <div className={classes.paper}>
-        <Grid container >
+        <Grid container style={{"text-align": "left"}}>
           <Box clone  order={{xs: 2, md: 1}}>
             <Grid item md={5} xs={12}>
               <Carousel>
@@ -156,13 +201,22 @@ const EventView = ({ history, location }) => {
           </Box>
           <Box clone  order={{xs: 1, md: 2}}>
             <Grid item md={7} xs={12} className={classes.title}>
+                {canceled?
+                  <Typography component='h1' variant='h2' className={classes.canceled}>
+                    Evento cancelado
+                  </Typography>
+                  :
+                  ""
+                }
+
                 <Typography component='h1' variant='h2'>
                   {event.title}
                 </Typography>
+                <hr style={{ "width": "70%" }}></hr>
                 <Typography component='h2' variant='h4'>
                   {event.studentGroup}
-                </Typography>
-                <Typography component='h2' variant='h5'>
+                </Typography>               
+                <Typography component='h5' variant='h5' style={{color:"#3f3f3f"}}>
                   Inicio: {new Intl.DateTimeFormat("es-MX", {
                     year: "numeric",
                     month: "numeric",
@@ -172,7 +226,8 @@ const EventView = ({ history, location }) => {
                     hour12: true
                   }).format(event.startDate)}
                 </Typography>
-                <Typography component='h3' variant='h5'>
+
+                <Typography component='h3' variant='h5' style={{color:"#3f3f3f"}}>
                   Fin: {new Intl.DateTimeFormat("es-MX", {
                     year: "numeric",
                     month: "numeric",
@@ -183,7 +238,7 @@ const EventView = ({ history, location }) => {
                   }).format(event.endDate)}
                 </Typography>
                 <Typography component='h3' variant='h5'>
-                  Lugar: {event.location}
+                  {event.location}
                 </Typography>
                 <Typography component='h2' variant='h6'>
                   {event.description}
@@ -193,7 +248,7 @@ const EventView = ({ history, location }) => {
                       variant="outlined"
                       color="primary"
                       className={classes.linkText}
-                      disabled={RSVPed}
+                      disabled={RSVPed || isAdminUser()}
                       onClick={_RSVP}
                     >
                     {RSVPed? 'RSVPed' : 'RSVP'}
@@ -210,6 +265,47 @@ const EventView = ({ history, location }) => {
                 >
                   Volver a Eventos
                 </Button>
+
+                {
+                 // TODO: Esto nada más debe de salirle a un admin
+                }
+                {canceled?
+                    <div>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.coolButton}
+                        onClick={_cancel_event}
+                      >
+                        Reagendar evento
+                      </Button>
+                    </div>
+
+                    :
+                    <div>
+                      <Button disableElevation
+                        variant="contained"
+                        color="secondary"
+                        className={classes.warningButton}
+                        onClick={_cancel_event}
+                        style={{color: '#FFFFFF'}}
+                      >
+                        Cancelar evento
+                      </Button>
+                    </div>
+                }
+
+                <div>
+                  <Button disableElevation
+                    style={{color: '#FFFFFF'}}
+                    variant="contained"
+                    color="secondary"
+                    className={classes.warningButton}
+                    onClick={_delete_event}
+                  >
+                    Eliminar evento
+                  </Button>
+                </div>
             </Grid>
           </Box>
         </Grid>
