@@ -14,7 +14,7 @@ const Home = () => {
 
 
   const getNextEvents = () => {
-    return axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events?startDate=${new Date()}&page=1&pageSize=4`)
+    return axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events?startDate=${new Date()}&page=1&pageSize=4&sort=startDate`)
       .then(response => {
         setNextEvents(response.data.events);
       })
@@ -28,7 +28,7 @@ const Home = () => {
   }
 
   const getPastEvents = () => {
-    return axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events?endDate=${new Date()}&page=1&pageSize=6`)
+    return axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/events?endDate=${new Date()}&page=1&pageSize=6&sort=-startDate`)
       .then(response => {
         setPastEvents(response.data.events);
 
