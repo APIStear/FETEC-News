@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToastContainer, toast} from 'react-toastify';
 import './EventNew.css';
 import DatePicker from 'react-datepicker';
+
+import {useHistory} from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 import { isAdminUser } from './TokenUtilities';
 
@@ -25,10 +27,10 @@ function userRedirect(history) {
   }
 }
 
-const EventNew = ({ history, location }) => {
+const EventNew = ({ location }) => {
   userRedirect(history);
   const classes = useStyles();
-
+  const history = useHistory();
   const _fix_img_urls = (imgKeys) => {
     return imgKeys.split(" ").filter(e => e !== "");
   }
@@ -48,7 +50,6 @@ const EventNew = ({ history, location }) => {
     let fixed = _fix_img_urls(imgKeys);
 
     let url = process.env.REACT_APP_API_DOMAIN || "http://localhost:4000";
-
     axios.post(`${url}/api/events/`, {
       title: title,
       studentGroup: studentGroup,
@@ -59,10 +60,8 @@ const EventNew = ({ history, location }) => {
       location: location,
       isRSVP: isRSVP
     }).then((response) => {
-      console.log(fixed);
-      // TODO: Redireccionar a todos los eventos
-      toast.success("Evento registrado correctamente");
-      // history.push("/events");
+
+      history.push(`/event?eventId=${response.data.event._id}`, "Evento registrado correctamente");
     }).catch(error => {
       let errors = error.response.data.message;
       toast.error(errors);
